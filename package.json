@@ -6,7 +6,9 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "npm run build && node scripts/check.mjs",
-    "preview": "python3 -m http.server 4173 -d dist"
+    "preview": "python3 -m http.server 4173 -d dist",
+    "deploy": "npm run build && npx wrangler deploy",
+    "preview:cloudflare": "npm run build && npx wrangler dev"
   },
   "engines": {
     "node": ">=20"
