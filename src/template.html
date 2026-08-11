@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="author" content="Kyrylo Kovalchuk">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{{LOCALE}}">
+  <meta property="og:site_name" content="Philosophy of Kerik">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  {{URL_META}}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{TITLE}}">
+  <meta name="twitter:description" content="{{DESCRIPTION}}">
+  <title>{{TITLE}}</title>
+  {{HREFLANG}}
+  <link rel="icon" href="{{ASSET_PREFIX}}favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="{{ASSET_PREFIX}}site.webmanifest">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}styles.css">
+  <script type="application/ld+json">{{STRUCTURED_DATA}}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">{{SKIP}}</a>
+<header class="site-header">
+  <a class="brand" href="{{HOME_URL}}" aria-label="Philosophy of Kerik — home">KERIK</a>
+  <button class="menu-button" id="menuButton" type="button" aria-controls="mainNav" aria-expanded="false">{{MENU}}</button>
+  <nav id="mainNav" aria-label="Primary navigation">
+    <a href="#book">{{NAV_BOOK}}</a>
+    <a href="#articles">{{NAV_ARTICLES}}</a>
+    <a href="#concepts">{{NAV_CONCEPTS}}</a>
+    <a href="#author">{{NAV_AUTHOR}}</a>
+  </nav>
+  <div class="lang-wrap" aria-label="{{LANGUAGE}}">
+    {{LANG_LINKS}}
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="home">
+    <p class="eyebrow">PHILOSOPHY OF KERIK</p>
+    <h1>{{HERO_TITLE}}</h1>
+    <p class="lead">{{HERO_LEAD}}</p>
+    <div class="actions">
+      <a class="primary" href="#book">{{HERO_BOOK}}</a>
+      <a class="secondary" href="#articles">{{HERO_ARTICLES}}</a>
+    </div>
+  </section>
+
+  <section class="section" id="book" aria-labelledby="book-heading">
+    <div class="section-head"><span>01</span><h2 id="book-heading">{{BOOK_HEADING}}</h2></div>
+    <div class="book-grid">
+      <figure class="book-cover">
+        <img src="{{ASSET_PREFIX}}assets/book-cover.webp" width="688" height="1265" loading="eager" fetchpriority="high" alt="The Philosophy of Kerik book cover">
+      </figure>
+      <div class="book-copy">
+        <p class="kicker">{{BOOK_KICKER}}</p>
+        <h3>{{BOOK_TITLE}}</h3>
+        <p>{{BOOK_TEXT}}</p>
+        <ul class="status-list">{{EDITIONS}}</ul>
+        <p class="book-note">{{BOOK_NOTE}}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="articles" aria-labelledby="articles-heading">
+    <div class="section-head"><span>02</span><h2 id="articles-heading">{{ARTICLES_HEADING}}</h2></div>
+    <p class="section-intro">{{ARTICLES_INTRO}}</p>
+    <div class="cards">{{ARTICLE_CARDS}}</div>
+  </section>
+
+  <section class="section" id="concepts" aria-labelledby="concepts-heading">
+    <div class="section-head"><span>03</span><h2 id="concepts-heading">{{CONCEPTS_HEADING}}</h2></div>
+    <p class="section-intro">{{CONCEPTS_INTRO}}</p>
+    <div class="concept-list">{{CONCEPT_ROWS}}</div>
+  </section>
+
+  <section class="section" id="author" aria-labelledby="author-heading">
+    <div class="section-head"><span>04</span><h2 id="author-heading">{{AUTHOR_HEADING}}</h2></div>
+    <div class="author-grid">
+      <div class="monogram" aria-hidden="true">KK</div>
+      <div class="author-copy">
+        <p class="kicker">{{AUTHOR_KICKER}}</p>
+        <h3>{{AUTHOR_NAME}}</h3>
+        <p>{{AUTHOR_TEXT}}</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© <span id="year">2026</span> Kyrylo Kovalchuk. {{FOOTER_RIGHTS}}</span>
+  <span>Philosophy of Kerik</span>
+</footer>
+<script src="{{ASSET_PREFIX}}script.js" defer></script>
+</body>
+</html>
