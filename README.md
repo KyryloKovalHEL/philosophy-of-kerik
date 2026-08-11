@@ -2,6 +2,8 @@
 
 Official multilingual website for **Philosophy of Kerik / Філософія Кєріка** by Kyrylo Kovalchuk.
 
+Production: `https://philosophyofkerik.com`
+
 ## Current state
 
 Production-ready static site with four crawlable language versions:
