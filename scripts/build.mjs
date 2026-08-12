@@ -19,6 +19,12 @@ for (const file of ['styles.css','script.js','favicon.svg','site.webmanifest']) 
 }
 fs.cpSync(path.join(src,'assets'), path.join(dist,'assets'), { recursive: true });
 
+const authorPhotoBase64 = [1,2,3,4,5]
+  .map(index => fs.readFileSync(path.join(src,'assets',`author-photo-${index}.txt`),'utf8'))
+  .join('')
+  .replace(/\s+/g,'');
+fs.writeFileSync(path.join(dist,'assets','author-photo.jpg'), Buffer.from(authorPhotoBase64,'base64'));
+
 const escapeHtml = (value) => String(value)
   .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
   .replaceAll('"','&quot;').replaceAll("'",'&#39;');
