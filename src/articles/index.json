@@ -1,0 +1,30 @@
+{
+  "published": "2026-08-12",
+  "ui": {
+    "uk": {
+      "intro": "Окремі тексти розвивають ключові теми книги та авторської системи.",
+      "read": "Читати статтю",
+      "back": "Усі статті"
+    },
+    "en": {
+      "intro": "Independent texts develop the central themes of the book and the wider philosophical project.",
+      "read": "Read article",
+      "back": "All articles"
+    },
+    "fi": {
+      "intro": "Erilliset tekstit syventävät kirjan ja filosofisen projektin keskeisiä teemoja.",
+      "read": "Lue artikkeli",
+      "back": "Kaikki artikkelit"
+    },
+    "sv": {
+      "intro": "Fristående texter fördjupar bokens och det filosofiska projektets centrala teman.",
+      "read": "Läs artikeln",
+      "back": "Alla artiklar"
+    }
+  },
+  "items": [
+    {"slug": "individuality-and-system-pressure"},
+    {"slug": "money-resources-and-freedom"},
+    {"slug": "technology-attention-and-autonomy"}
+  ]
+}
