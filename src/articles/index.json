@@ -1,30 +1,22 @@
 {
   "published": "2026-08-12",
+  "updated": "2026-08-17",
   "ui": {
-    "uk": {
-      "intro": "Окремі тексти розвивають ключові теми книги та авторської системи.",
-      "read": "Читати статтю",
-      "back": "Усі статті"
-    },
-    "en": {
-      "intro": "Independent texts develop the central themes of the book and the wider philosophical project.",
-      "read": "Read article",
-      "back": "All articles"
-    },
-    "fi": {
-      "intro": "Erilliset tekstit syventävät kirjan ja filosofisen projektin keskeisiä teemoja.",
-      "read": "Lue artikkeli",
-      "back": "Kaikki artikkelit"
-    },
-    "sv": {
-      "intro": "Fristående texter fördjupar bokens och det filosofiska projektets centrala teman.",
-      "read": "Läs artikeln",
-      "back": "Alla artiklar"
-    }
+    "uk": {"intro":"Статті розвивають ключові теми книги та «Філософії Кєріка» як цілісної системи ідей.","read":"Читати статтю","back":"Усі статті","all":"Архів статей","tags":"Теми","related":"Пов’язані матеріали"},
+    "en": {"intro":"Independent essays develop the central themes of the book and Philosophy of Kerik as a coherent framework of ideas.","read":"Read article","back":"All articles","all":"Article archive","tags":"Topics","related":"Related reading"},
+    "fi": {"intro":"Itsenäiset esseet syventävät kirjan ja Kerikin filosofian keskeisiä teemoja yhtenäisenä ajattelukehyksenä.","read":"Lue artikkeli","back":"Kaikki artikkelit","all":"Artikkeliarkisto","tags":"Aiheet","related":"Aiheeseen liittyvää"},
+    "sv": {"intro":"Fristående essäer fördjupar bokens och Keriks filosofis centrala teman som en sammanhängande idéram.","read":"Läs artikeln","back":"Alla artiklar","all":"Artikelarkiv","tags":"Ämnen","related":"Relaterad läsning"}
   },
   "items": [
-    {"slug": "individuality-and-system-pressure"},
-    {"slug": "money-resources-and-freedom"},
-    {"slug": "technology-attention-and-autonomy"}
+    {"slug":"individuality-and-system-pressure","titles":{"uk":"Індивідуальність і тиск систем","en":"Individuality and the pressure of systems","fi":"Yksilöllisyys ja järjestelmien paine","sv":"Individualitet och systemens tryck"},"tags":{"uk":["Індивідуальність","Системи","Автономія"],"en":["Individuality","Systems","Autonomy"],"fi":["Yksilöllisyys","Järjestelmät","Autonomia"],"sv":["Individualitet","System","Autonomi"]}},
+    {"slug":"money-resources-and-freedom","titles":{"uk":"Гроші, ресурси та свобода","en":"Money, resources and freedom","fi":"Raha, resurssit ja vapaus","sv":"Pengar, resurser och frihet"},"tags":{"uk":["Гроші","Ресурси","Свобода"],"en":["Money","Resources","Freedom"],"fi":["Raha","Resurssit","Vapaus"],"sv":["Pengar","Resurser","Frihet"]}},
+    {"slug":"technology-attention-and-autonomy","titles":{"uk":"Технології, увага та автономія","en":"Technology, attention and autonomy","fi":"Teknologia, huomio ja autonomia","sv":"Teknik, uppmärksamhet och autonomi"},"tags":{"uk":["Технології","Увага","Автономія"],"en":["Technology","Attention","Autonomy"],"fi":["Teknologia","Huomio","Autonomia"],"sv":["Teknik","Uppmärksamhet","Autonomi"]}},
+    {"slug":"conscious-choice-and-automatic-reaction","titles":{"uk":"Свідомий вибір і автоматична реакція","en":"Conscious choice and automatic reaction","fi":"Tietoinen valinta ja automaattinen reaktio","sv":"Medvetet val och automatisk reaktion"},"tags":{"uk":["Вибір","Поведінка","Відповідальність"],"en":["Choice","Behaviour","Responsibility"],"fi":["Valinta","Käyttäytyminen","Vastuu"],"sv":["Val","Beteende","Ansvar"]}},
+    {"slug":"attention-as-a-limited-resource","titles":{"uk":"Увага як обмежений ресурс","en":"Attention as a limited resource","fi":"Huomio rajallisena resurssina","sv":"Uppmärksamhet som en begränsad resurs"},"tags":{"uk":["Увага","Інформація","Автономія"],"en":["Attention","Information","Autonomy"],"fi":["Huomio","Informaatio","Autonomia"],"sv":["Uppmärksamhet","Information","Autonomi"]}},
+    {"slug":"technology-as-an-amplifier","titles":{"uk":"Технологія як підсилювач","en":"Technology as an amplifier","fi":"Teknologia vahvistimena","sv":"Teknik som förstärkare"},"tags":{"uk":["Технології","ШІ","Стратегія"],"en":["Technology","AI","Strategy"],"fi":["Teknologia","Tekoäly","Strategia"],"sv":["Teknik","AI","Strategi"]}},
+    {"slug":"wealth-as-a-system-not-a-number","titles":{"uk":"Багатство як система, а не число","en":"Wealth as a system, not a number","fi":"Vauraus järjestelmänä, ei lukuna","sv":"Förmögenhet som ett system, inte ett tal"},"tags":{"uk":["Багатство","Капітал","Системи"],"en":["Wealth","Capital","Systems"],"fi":["Vauraus","Pääoma","Järjestelmät"],"sv":["Förmögenhet","Kapital","System"]}},
+    {"slug":"observer-position-and-group-influence","titles":{"uk":"Позиція спостерігача в колективних системах","en":"The observer's position in collective systems","fi":"Tarkkailijan asema kollektiivisissa järjestelmissä","sv":"Observatörens position i kollektiva system"},"tags":{"uk":["Групи","Системи","Автономія"],"en":["Groups","Systems","Autonomy"],"fi":["Ryhmät","Järjestelmät","Autonomia"],"sv":["Grupper","System","Autonomi"]}},
+    {"slug":"time-as-a-nonrenewable-resource","titles":{"uk":"Час як невідновлюваний ресурс","en":"Time as a non-renewable resource","fi":"Aika uusiutumattomana resurssina","sv":"Tid som en icke-förnybar resurs"},"tags":{"uk":["Час","Пріоритети","Вибір"],"en":["Time","Priorities","Choice"],"fi":["Aika","Prioriteetit","Valinta"],"sv":["Tid","Prioriteringar","Val"]}},
+    {"slug":"reality-as-a-model","titles":{"uk":"Реальність як модель: сприйняття, фільтри та вибір","en":"Reality as a model: perception, filters and choice","fi":"Todellisuus mallina: havainto, suodattimet ja valinta","sv":"Verkligheten som modell: perception, filter och val"},"tags":{"uk":["Реальність","Сприйняття","Вибір"],"en":["Reality","Perception","Choice"],"fi":["Todellisuus","Havainto","Valinta"],"sv":["Verklighet","Perception","Val"]}}
   ]
 }
