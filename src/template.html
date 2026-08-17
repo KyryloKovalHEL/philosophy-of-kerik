@@ -19,10 +19,11 @@
   <meta name="twitter:description" content="{{DESCRIPTION}}">
   <title>{{TITLE}}</title>
   {{HREFLANG}}
+  {{FEED_LINK}}
   <link rel="icon" href="{{ASSET_PREFIX}}favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="{{ASSET_PREFIX}}site.webmanifest">
-  <link rel="stylesheet" href="{{ASSET_PREFIX}}styles.css?v=20260812-articles1">
-  <link rel="stylesheet" href="{{ASSET_PREFIX}}assets/books.css?v=20260812-books1">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}styles.css?v=20260817-complete1">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}assets/books.css?v=20260817-complete1">
   <script type="application/ld+json">{{STRUCTURED_DATA}}</script>
 </head>
 <body>
@@ -31,74 +32,39 @@
   <a class="brand" href="{{HOME_URL}}" aria-label="Philosophy of Kerik — home">KERIK</a>
   <button class="menu-button" id="menuButton" type="button" aria-controls="mainNav" aria-expanded="false">{{MENU}}</button>
   <nav id="mainNav" aria-label="Primary navigation">
-    <a href="#book">{{NAV_BOOK}}</a>
-    <a href="#articles">{{NAV_ARTICLES}}</a>
-    <a href="#concepts">{{NAV_CONCEPTS}}</a>
-    <a href="#author">{{NAV_AUTHOR}}</a>
+    <a href="{{BOOK_PAGE_URL}}">{{NAV_BOOK}}</a>
+    <a href="{{ARTICLES_PAGE_URL}}">{{NAV_ARTICLES}}</a>
+    <a href="{{CONCEPTS_PAGE_URL}}">{{NAV_CONCEPTS}}</a>
+    <a href="{{AUTHOR_PAGE_URL}}">{{NAV_AUTHOR}}</a>
+    <a href="{{SEARCH_URL}}">{{NAV_SEARCH}}</a>
   </nav>
-  <div class="lang-wrap" aria-label="{{LANGUAGE}}">
-    {{LANG_LINKS}}
-  </div>
+  <div class="lang-wrap" aria-label="{{LANGUAGE}}">{{LANG_LINKS}}</div>
 </header>
-
 <main id="main">
-  <section class="hero" id="home">
-    <p class="eyebrow">PHILOSOPHY OF KERIK</p>
-    <h1>{{HERO_TITLE}}</h1>
-    <p class="lead">{{HERO_LEAD}}</p>
-    <div class="actions">
-      <a class="primary" href="#book">{{HERO_BOOK}}</a>
-      <a class="secondary" href="#articles">{{HERO_ARTICLES}}</a>
-    </div>
+  <section class="hero">
+    <p class="eyebrow">PHILOSOPHY OF KERIK</p><h1>{{HERO_TITLE}}</h1><p class="lead">{{HERO_LEAD}}</p>
+    <div class="actions"><a class="primary" href="#book">{{HERO_BOOK}}</a><a class="secondary" href="{{PRINCIPLES_URL}}">{{PRINCIPLES_LABEL}}</a></div>
   </section>
-
-  <section class="section" id="book" aria-labelledby="book-heading">
-    <div class="section-head"><span>01</span><h2 id="book-heading">{{BOOK_HEADING}}</h2></div>
-    <div class="book-grid">
-      <figure class="book-cover">
-        <img src="{{ASSET_PREFIX}}assets/book-cover.webp" width="688" height="1265" loading="eager" fetchpriority="high" alt="The Philosophy of Kerik book cover">
-      </figure>
-      <div class="book-copy">
-        <p class="kicker">{{BOOK_KICKER}}</p>
-        <h3>{{BOOK_TITLE}}</h3>
-        <p>{{BOOK_TEXT}}</p>
-        <ul class="status-list">{{EDITIONS}}</ul>
-        <p class="book-note">{{BOOK_NOTE}}</p>
-      </div>
-    </div>
+  <section class="section" id="book">
+    <div class="section-head"><span>01</span><h2>{{BOOK_HEADING}}</h2></div>
+    <div class="book-grid"><figure class="book-cover"><img src="{{ASSET_PREFIX}}assets/book-cover.webp" width="688" height="1265" alt="{{BOOK_COVER_ALT}}" loading="eager" fetchpriority="high"></figure><div class="book-copy"><p class="kicker">{{BOOK_KICKER}}</p><h3>{{BOOK_TITLE}}</h3><p>{{BOOK_TEXT}}</p><ul class="status-list">{{EDITION_ITEMS}}</ul><p class="book-note">{{BOOK_NOTE}}</p><div class="inline-actions"><a class="secondary" href="{{BOOK_PAGE_URL}}">{{BOOK_STRUCTURE_LABEL}}</a><a class="secondary" href="{{REFERENCES_URL}}">{{REFERENCES_LABEL}}</a></div></div></div>
   </section>
-
-  <section class="section" id="articles" aria-labelledby="articles-heading">
-    <div class="section-head"><span>02</span><h2 id="articles-heading">{{ARTICLES_HEADING}}</h2></div>
-    <p class="section-intro">{{ARTICLES_INTRO}}</p>
-    <div class="cards">{{ARTICLE_CARDS}}</div>
+  <section class="section" id="articles">
+    <div class="section-head"><span>02</span><h2>{{ARTICLES_HEADING}}</h2></div><p class="section-intro">{{ARTICLES_INTRO}}</p><div class="cards">{{ARTICLE_CARDS}}</div><div class="section-action"><a class="secondary" href="{{ARTICLES_PAGE_URL}}">{{ALL_ARTICLES_LABEL}}</a></div>
   </section>
-
-  <section class="section" id="concepts" aria-labelledby="concepts-heading">
-    <div class="section-head"><span>03</span><h2 id="concepts-heading">{{CONCEPTS_HEADING}}</h2></div>
-    <p class="section-intro">{{CONCEPTS_INTRO}}</p>
-    <div class="concept-list">{{CONCEPT_ROWS}}</div>
+  <section class="section" id="concepts">
+    <div class="section-head"><span>03</span><h2>{{CONCEPTS_HEADING}}</h2></div><p class="section-intro">{{CONCEPTS_INTRO}}</p><div class="concept-list">{{CONCEPT_ROWS}}</div><div class="section-action"><a class="secondary" href="{{CONCEPTS_PAGE_URL}}">{{ALL_CONCEPTS_LABEL}}</a></div>
   </section>
-
-  <section class="section" id="author" aria-labelledby="author-heading">
-    <div class="section-head"><span>04</span><h2 id="author-heading">{{AUTHOR_HEADING}}</h2></div>
-    <div class="author-grid">
-      <div class="author-photo">
-        <img src="{{ASSET_PREFIX}}assets/1.jpeg" width="300" height="375" loading="lazy" decoding="async" alt="Kyrylo Kovalchuk">
-      </div>
-      <div class="author-copy">
-        <p class="kicker">{{AUTHOR_KICKER}}</p>
-        <h3>{{AUTHOR_NAME}}</h3>
-        <p>{{AUTHOR_TEXT}}</p>
-      </div>
-    </div>
+  <section class="section" id="explore">
+    <div class="section-head"><span>04</span><h2>{{EXPLORE_LABEL}}</h2></div>
+    <div class="explore-grid"><a class="explore-card" href="{{PRINCIPLES_URL}}"><span>01</span><h3>{{PRINCIPLES_LABEL}}</h3><p>{{PRINCIPLES_TEASER}}</p></a><a class="explore-card" href="{{BOOK_PAGE_URL}}"><span>02</span><h3>{{BOOK_STRUCTURE_LABEL}}</h3><p>{{BOOK_STRUCTURE_TEASER}}</p></a><a class="explore-card" href="{{REFERENCES_URL}}"><span>03</span><h3>{{REFERENCES_LABEL}}</h3><p>{{REFERENCES_TEASER}}</p></a></div>
   </section>
+  <section class="section" id="author">
+    <div class="section-head"><span>05</span><h2>{{AUTHOR_HEADING}}</h2></div><div class="author-grid"><div class="author-photo"><img src="{{ASSET_PREFIX}}assets/1.jpeg" width="300" height="375" loading="lazy" decoding="async" alt="Kyrylo Kovalchuk"></div><div class="author-copy"><p class="kicker">{{AUTHOR_KICKER}}</p><h3>{{AUTHOR_NAME}}</h3><p>{{AUTHOR_TEXT}}</p><div class="inline-actions"><a class="secondary" href="{{AUTHOR_PAGE_URL}}">{{AUTHOR_PAGE_LABEL}}</a><a class="secondary" href="{{CONTACT_URL}}">{{CONTACT_LABEL}}</a></div></div></div>
+  </section>
+  <section class="section subscribe-section" id="subscribe"><div class="section-head"><span>06</span><h2>{{SUBSCRIBE_TITLE}}</h2></div><p class="section-intro">{{SUBSCRIBE_TEXT}}</p><a class="primary" href="{{FEED_URL}}" type="application/atom+xml">{{SUBSCRIBE_ACTION}}</a></section>
 </main>
-
-<footer>
-  <span>© <span id="year">2026</span> Kyrylo Kovalchuk. {{FOOTER_RIGHTS}}</span>
-  <span>Philosophy of Kerik</span>
-</footer>
-<script src="{{ASSET_PREFIX}}script.js?v=20260812-articles1" defer></script>
+<footer><div class="footer-main"><span>© <span id="year">2026</span> Kyrylo Kovalchuk. {{FOOTER_RIGHTS}}</span><span>Philosophy of Kerik</span></div><nav class="footer-links" aria-label="Footer"><a href="{{CONTACT_URL}}">{{CONTACT_LABEL}}</a><a href="{{PRIVACY_URL}}">{{PRIVACY_LABEL}}</a><a href="{{TERMS_URL}}">{{TERMS_LABEL}}</a><a href="{{FEED_URL}}">RSS/Atom</a></nav></footer>
+<script src="{{ASSET_PREFIX}}script.js?v=20260817-complete1" defer></script>
 </body>
 </html>
