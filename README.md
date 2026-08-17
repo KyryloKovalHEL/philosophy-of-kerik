@@ -13,14 +13,40 @@ Production-ready static site with four crawlable language versions:
 - Finnish — `/fi/`
 - Swedish — `/sv/`
 
-The visual direction intentionally preserves the original dark, minimal Philosophy of Kerik concept. The repository includes the official book-cover artwork extracted from the author's supplied book PDF. The full book PDFs are intentionally **not** included in the public repository.
+The visual direction preserves the dark, minimal Philosophy of Kerik identity. The site is built as an author platform and structured body of work rather than a temporary project page.
+
+## Published architecture
+
+The build generates, in all four languages:
+
+- home page
+- article archive with **10 essays**, topic tags and filtering
+- **4 core concept pages**
+- **7 core principles**
+- complete **13-chapter book structure**
+- references and further reading
+- expanded author page
+- official contact page linking LinkedIn and GitHub
+- local site search
+- privacy policy
+- terms of use / copyright guidance
+- Atom/RSS subscription feed
+
+The online Ukrainian and English Short Editions include:
+
+- table of contents
+- chapter anchors
+- reading progress indicator
+- previous / next chapter navigation
+
+Articles and concepts include related-reading links.
 
 ## Technology
 
 - Semantic HTML5
 - CSS
 - Minimal vanilla JavaScript
-- Node.js build script with no application runtime dependencies
+- Node.js static build with no application runtime dependencies
 - Cloudflare Workers Static Assets
 - GitHub-integrated Cloudflare Workers Builds
 - GitHub Actions validation
@@ -32,6 +58,8 @@ Requires Node.js 20+.
 ```bash
 npm run check
 ```
+
+This builds the complete site and validates language synchronization, article/concept counts, book readers, search indexes, feeds, legal pages and SEO output.
 
 For a simple local server:
 
@@ -51,84 +79,86 @@ npm run preview:cloudflare
 
 The project is configured for **Cloudflare Workers Static Assets** with `wrangler.jsonc`.
 
-Recommended Workers Builds settings:
+Workers Builds settings:
 
 - Production branch: `main`
 - Root directory: repository root
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
-- Static asset directory: `dist` (declared in `wrangler.jsonc`)
+- Static asset directory: `dist`
 
-`wrangler.jsonc` also enables:
+The build uses `https://philosophyofkerik.com` as the canonical production origin unless `SITE_URL` overrides it.
 
-- `workers.dev` deployment
-- custom `404.html` handling
-- automatic trailing-slash behavior for localized directory pages
-- native `_headers` and `_redirects` processing
-
-The first deployment can run without `SITE_URL`. This intentionally omits absolute canonical URLs, absolute Open Graph image URLs, and `sitemap.xml` until a stable public origin exists.
-
-After Cloudflare gives the production `*.workers.dev` URL, or after the custom domain is connected, add this **build-time** environment variable in Cloudflare Workers → Settings → Build:
-
-```text
-SITE_URL=https://your-final-origin.example
-```
-
-Then trigger a new build. The build automatically generates:
+Every production build generates:
 
 - canonical URLs
-- `hreflang` links for UK/EN/FI/SV
-- Open Graph URL/image metadata
-- Twitter image metadata
+- `hreflang` links for UK / EN / FI / SV with English as `x-default`
+- Open Graph and Twitter image metadata
+- Schema.org data for WebSite, Book, Person, Article, DefinedTerm and relevant page types
 - `sitemap.xml`
-- sitemap declaration in `robots.txt`
+- `robots.txt`
+- security headers
+- localized Atom feeds and search indexes
 
-When the final custom domain is connected, set `SITE_URL` to the final canonical domain and redeploy once more.
+## Content sources
 
-## Content editing
-
-All current translations and public text live in:
+Primary public copy and home-page labels:
 
 ```text
 src/content.json
 ```
 
-The page structure is in `src/template.html`. This keeps all four language versions structurally synchronized.
+Extended multilingual pages, concepts, principles, chapter summaries, author/contact/legal content and references:
+
+```text
+src/extended-content.json
+```
+
+Article catalogue and localized topic metadata:
+
+```text
+src/articles/index.json
+```
+
+The original three essays remain in:
+
+```text
+src/articles/<slug>/<lang>.json
+```
+
+The seven newer essays are synchronized in:
+
+```text
+src/new-articles.json
+```
+
+## Templates and build
+
+```text
+src/template.html
+src/page-template.html
+src/article-template.html
+src/book-reader-template.html
+src/styles.css
+src/assets/books.css
+src/script.js
+scripts/build.mjs
+scripts/check.mjs
+```
 
 ## Book materials
 
-The website currently identifies:
+The website identifies:
 
-- full Ukrainian edition — prepared
-- Ukrainian Short Edition — prepared
-- English Short Edition — prepared
+- full Ukrainian edition — prepared, not published on the site
+- Ukrainian Short Edition — available for online reading
+- English Short Edition — available for online reading
 
-No full book text or downloadable book PDF is published by default.
+Reader source text is stored as compressed build data and verified by SHA-256 before rendering. The known English sentence error is corrected only after integrity verification during the build, preserving the source checksum.
 
-## Repository structure
+## Privacy
 
-```text
-.github/workflows/validate.yml
-scripts/build.mjs
-scripts/check.mjs
-src/assets/book-cover.webp
-src/assets/social-card.webp
-src/content.json
-src/favicon.svg
-src/script.js
-src/site.webmanifest
-src/styles.css
-src/template.html
-.assetsignore
-.editorconfig
-.env.example
-.gitignore
-.nvmrc
-COPYRIGHT.md
-README.md
-package.json
-wrangler.jsonc
-```
+The site intentionally avoids user accounts, advertising pixels, third-party analytics and non-essential cookies. Search runs locally in the browser. Subscription is provided through a standards-based Atom/RSS feed, so the site does not need to collect email addresses.
 
 ## Deployment architecture
 
@@ -145,9 +175,5 @@ Wrangler deploy
       ↓
 Cloudflare Workers Static Assets
       ↓
-*.workers.dev
-      ↓
-Custom domain
+philosophyofkerik.com
 ```
-
-<!-- trigger Cloudflare deployment -->
