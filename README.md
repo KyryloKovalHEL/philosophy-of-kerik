@@ -15,6 +15,8 @@ Production-ready static site with four crawlable language versions:
 
 The visual direction preserves the dark, minimal Philosophy of Kerik identity. The site is built as an author platform and structured body of work rather than a temporary project page.
 
+The home page uses an editorial author portrait at the chessboard in the hero and a research/library photograph in the book section. The dedicated author page uses a separate formal portrait. These photographs are generated as optimized WebP assets during the build, with localized alternative text and responsive layouts.
+
 ## Published architecture
 
 The build generates, in all four languages:
@@ -59,7 +61,7 @@ Requires Node.js 20+.
 npm run check
 ```
 
-This builds the complete site and validates language synchronization, article/concept counts, book readers, search indexes, feeds, legal pages and SEO output.
+This prepares the editorial WebP photographs, builds the complete site, applies the responsive photo integration, and validates language synchronization, article/concept counts, book readers, search indexes, feeds, legal pages and SEO output.
 
 For a simple local server:
 
@@ -120,60 +122,18 @@ Article catalogue and localized topic metadata:
 src/articles/index.json
 ```
 
-The original three essays remain in:
+Editorial photo source data:
 
 ```text
-src/articles/<slug>/<lang>.json
+src/assets/photo-data/
 ```
 
-The seven newer essays are synchronized in:
+The build reconstructs these into:
 
 ```text
-src/new-articles.json
+src/assets/kerik-chess.webp
+src/assets/kerik-library.webp
+src/assets/kerik-author.webp
 ```
 
-## Templates and build
-
-```text
-src/template.html
-src/page-template.html
-src/article-template.html
-src/book-reader-template.html
-src/styles.css
-src/assets/books.css
-src/script.js
-scripts/build.mjs
-scripts/check.mjs
-```
-
-## Book materials
-
-The website identifies:
-
-- full Ukrainian edition — prepared, not published on the site
-- Ukrainian Short Edition — available for online reading
-- English Short Edition — available for online reading
-
-Reader source text is stored as compressed build data and verified by SHA-256 before rendering. The known English sentence error is corrected only after integrity verification during the build, preserving the source checksum.
-
-## Privacy
-
-The site intentionally avoids user accounts, advertising pixels, third-party analytics and non-essential cookies. Search runs locally in the browser. Subscription is provided through a standards-based Atom/RSS feed, so the site does not need to collect email addresses.
-
-## Deployment architecture
-
-```text
-GitHub main branch
-      ↓
-Cloudflare Workers Builds
-      ↓
-npm run build
-      ↓
-dist/
-      ↓
-Wrangler deploy
-      ↓
-Cloudflare Workers Static Assets
-      ↓
-philosophyofkerik.com
-```
+The generated public site does not expose the intermediate photo-data directory.
