@@ -1,0 +1,10 @@
+:root{--bg:#12100d;--panel:#171410;--panel-2:#14110e;--line:#332d26;--line-strong:#62584c}
+body{background:var(--bg)}
+.site-header,.reader-header{background:rgba(18,16,13,.94)}
+.secondary:hover{background:#17130f}
+.cards article,.archive-card{background:linear-gradient(180deg,#171410,#12100d)}
+.cards article:hover,.archive-card:hover{background:linear-gradient(180deg,#1c1813,#14110e)}
+.book-cover img,.author-photo,.filter-bar input,.search-form input{background:#14110e}
+.edition-link a:hover{background:#171410}
+.reading-progress{background:#211d18}
+.reader-page{background:#14110e}
