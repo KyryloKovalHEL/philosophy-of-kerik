@@ -20,15 +20,17 @@ const pages = [
     url: `${siteUrl}/`,
     authorUrl: `${siteUrl}/author/`,
     name: 'Філософія Кєріка',
-    description: 'Філософія Кєріка — авторська філософська система Кирила Ковальчука про індивідуальність, вибір, свободу, технології, багатство та контроль власної реальності.'
+    siteName: 'Філософія Кєріка',
+    description: 'Офіційний сайт «Філософії Кєріка» — авторської філософської системи і книги Кирила Ковальчука про системи, вибір, особисту автономію, технології та свідоме формування власної реальності.'
   },
   {
     lang: 'en',
     file: path.join(dist, 'en', 'index.html'),
     url: `${siteUrl}/en/`,
     authorUrl: `${siteUrl}/en/author/`,
-    name: 'Philosophy of Kerik',
-    description: 'Philosophy of Kerik is Kyrylo Kovalchuk’s philosophical system about individuality, choice, freedom, technology, wealth and control of one’s own reality.'
+    name: 'The Philosophy of Kerik',
+    siteName: 'Philosophy of Kerik',
+    description: 'The Philosophy of Kerik, also known as Philosophy of Kerik, is the philosophical system and book created by Ukrainian author Kyrylo Kovalchuk, focused on systems, choice, personal autonomy, technology and reality.'
   },
   {
     lang: 'fi',
@@ -36,6 +38,7 @@ const pages = [
     url: `${siteUrl}/fi/`,
     authorUrl: `${siteUrl}/fi/author/`,
     name: 'Kerikin filosofia',
+    siteName: 'Kerikin filosofia',
     description: 'Kerikin filosofia on Kyrylo Kovalchukin filosofinen järjestelmä yksilöllisyydestä, valinnoista, vapaudesta, teknologiasta, vauraudesta ja oman todellisuuden hallinnasta.'
   },
   {
@@ -44,11 +47,12 @@ const pages = [
     url: `${siteUrl}/sv/`,
     authorUrl: `${siteUrl}/sv/author/`,
     name: 'Keriks filosofi',
+    siteName: 'Keriks filosofi',
     description: 'Keriks filosofi är Kyrylo Kovalchuks filosofiska system om individualitet, val, frihet, teknik, välstånd och kontroll över den egna verkligheten.'
   }
 ];
 
-const alternateNames = ['Філософія Кєріка', 'Philosophy of Kerik', 'Kerikin filosofia', 'Keriks filosofi'];
+const alternateNames = ['Філософія Кєріка', 'The Philosophy of Kerik', 'Philosophy of Kerik', 'Kerikin filosofia', 'Keriks filosofi'];
 const topics = ['individuality', 'choice', 'personal autonomy', 'technology', 'wealth', 'systems', 'reality'];
 const scriptPattern = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
 
@@ -64,7 +68,7 @@ for (const page of pages) {
   const website = graph.find(node => node['@type'] === 'WebSite') || {};
   website['@type'] = 'WebSite';
   website['@id'] = website['@id'] || `${page.url}#website`;
-  website.name = page.name;
+  website.name = page.siteName;
   website.alternateName = alternateNames;
   website.url = page.url;
   website.inLanguage = page.lang;
@@ -85,6 +89,15 @@ for (const page of pages) {
     book.author = { '@id': authorId };
     book.creator = { '@id': authorId };
     book.isPartOf = { '@id': philosophyId };
+    if (page.lang === 'uk') {
+      book.name = 'Філософія Кєріка. Система контролю реальності';
+      book.alternateName = ['Філософія Кєріка', 'The Philosophy of Kerik', 'Philosophy of Kerik'];
+      book.url = `${siteUrl}/books/short-uk/`;
+    } else {
+      book.name = 'The Philosophy of Kerik: The System of Reality Control';
+      book.alternateName = ['The Philosophy of Kerik', 'Philosophy of Kerik'];
+      book.url = `${siteUrl}/books/short-en/`;
+    }
   }
 
   const philosophy = {
@@ -127,6 +140,8 @@ for (const page of pages) {
   const verifyGraph = verify['@graph'];
   if (!verifyGraph.some(node => node['@id'] === philosophyId)) throw new Error(`Philosophy entity missing after write: ${page.file}`);
   if (!verifyGraph.some(node => node['@id'] === authorId && Array.isArray(node.sameAs) && node.sameAs.length === 2)) throw new Error(`Author entity links missing after write: ${page.file}`);
+  const verifyWebsite = verifyGraph.find(node => node['@type'] === 'WebSite');
+  if (!verifyWebsite || !Array.isArray(verifyWebsite.alternateName) || !verifyWebsite.alternateName.includes('The Philosophy of Kerik')) throw new Error(`Brand aliases missing after write: ${page.file}`);
 }
 
 console.log('SEO entity graph strengthened on 4 localized homepages.');
