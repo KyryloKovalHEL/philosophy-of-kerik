@@ -197,7 +197,7 @@ for (const file of walk(dist).filter(file => file.endsWith('.html'))) {
   if (!html.includes('id="mainNav"') || html.includes('data-purchase-nav="true"')) continue;
   const lang = languageForFile(file);
   const link = `<a href="${routePath(lang, 'buy')}" data-purchase-nav="true">${esc(purchase[lang].nav)}</a>`;
-  html = html.replace(/(<nav id="mainNav"[^>]*>\s*<a[^>]*>.*?<\/a>)/s, `$1${link}`);
+  html = html.replace(/(<a href="[^"]*\/author\/"[^>]*>.*?<\/a>)/s, `$1${link}`);
   fs.writeFileSync(file, html);
 }
 
