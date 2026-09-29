@@ -3,7 +3,7 @@
 
   const copy = {
     uk: {
-      lead: 'Я — український автор «Філософії Кєріка». Мій професійний досвід охоплює правоохоронну сферу, міжнародний бізнес, кібербезпеку та роботу з організаційними системами.',
+      lead: 'Я — український автор книг «Філософія Кєріка» та «Десятий кілометр». Мій професійний досвід охоплює правоохоронну сферу, міжнародний бізнес, кібербезпеку та роботу з організаційними системами.',
       paragraphs: [
         'Досвід у різних інституційних і комерційних середовищах сформував мій інтерес до того, як правила, стимули, технології, групова динаміка й доступ до ресурсів змінюють поведінку окремої людини.',
         'Нині я навчаюся за напрямом International Business у Фінляндії, поєднуючи практичний досвід із вивченням стратегії, маркетингу, технологій та міжнародних ринків.',
@@ -12,7 +12,7 @@
       ]
     },
     en: {
-      lead: 'I am the Ukrainian author of Philosophy of Kerik. My professional background spans law enforcement, international business, cybersecurity and work with organizational systems.',
+      lead: 'I am a Ukrainian author of Philosophy of Kerik and The Tenth Kilometer. My professional background spans law enforcement, international business, cybersecurity and work with organizational systems.',
       paragraphs: [
         'Experience across different institutional and commercial environments shaped my interest in how rules, incentives, technology, group dynamics and access to resources change individual behaviour.',
         'I am currently studying International Business in Finland, combining practical experience with the study of strategy, marketing, technology and international markets.',
@@ -21,7 +21,7 @@
       ]
     },
     fi: {
-      lead: 'Olen ukrainalainen Kerikin filosofian kirjoittaja. Ammatillinen taustani ulottuu lainvalvontaan, kansainväliseen liiketoimintaan, kyberturvallisuuteen ja organisaatiojärjestelmiin.',
+      lead: 'Olen ukrainalainen kirjailija. Teoksiani ovat Kerikin filosofia ja The Tenth Kilometer. Ammatillinen taustani ulottuu lainvalvontaan, kansainväliseen liiketoimintaan, kyberturvallisuuteen ja organisaatiojärjestelmiin.',
       paragraphs: [
         'Kokemus erilaisissa institutionaalisissa ja kaupallisissa ympäristöissä synnytti kiinnostukseni siihen, miten säännöt, kannustimet, teknologia, ryhmädynamiikka ja resurssien saatavuus muuttavat yksilön käyttäytymistä.',
         'Opiskelen tällä hetkellä International Business -alaa Suomessa ja yhdistän käytännön kokemusta strategian, markkinoinnin, teknologian ja kansainvälisten markkinoiden opiskeluun.',
@@ -30,7 +30,7 @@
       ]
     },
     sv: {
-      lead: 'Jag är den ukrainska författaren bakom Keriks filosofi. Min yrkesbakgrund omfattar brottsbekämpning, internationell affärsverksamhet, cybersäkerhet och arbete med organisatoriska system.',
+      lead: 'Jag är en ukrainsk författare. Mina böcker omfattar Keriks filosofi och The Tenth Kilometer. Min yrkesbakgrund omfattar brottsbekämpning, internationell affärsverksamhet, cybersäkerhet och arbete med organisatoriska system.',
       paragraphs: [
         'Erfarenhet från olika institutionella och kommersiella miljöer väckte mitt intresse för hur regler, incitament, teknik, gruppdynamik och tillgång till resurser förändrar individuellt beteende.',
         'Jag studerar för närvarande International Business i Finland och kombinerar praktisk erfarenhet med studier i strategi, marknadsföring, teknik och internationella marknader.',
