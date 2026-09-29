@@ -12,10 +12,12 @@ const content = JSON.parse(fs.readFileSync(path.join(src, 'content.json'), 'utf8
 const articlesData = JSON.parse(fs.readFileSync(path.join(src, 'articles', 'index.json'), 'utf8'));
 const extended = JSON.parse(fs.readFileSync(path.join(src, 'extended-content.json'), 'utf8'));
 const newArticles = JSON.parse(fs.readFileSync(path.join(src, 'new-articles.json'), 'utf8'));
+const booksData = JSON.parse(fs.readFileSync(path.join(src, 'books', 'index.json'), 'utf8'));
 const template = fs.readFileSync(path.join(src, 'template.html'), 'utf8');
 const articleTemplate = fs.readFileSync(path.join(src, 'article-template.html'), 'utf8');
 const pageTemplate = fs.readFileSync(path.join(src, 'page-template.html'), 'utf8');
 const readerTemplate = fs.readFileSync(path.join(src, 'book-reader-template.html'), 'utf8');
+const bookPageTemplate = fs.readFileSync(path.join(src, 'book-page-template.html'), 'utf8');
 const siteUrl = (process.env.SITE_URL || 'https://philosophyofkerik.com').replace(/\/$/, '');
 const langs = ['uk', 'en', 'fi', 'sv'];
 
@@ -40,10 +42,10 @@ const bookNotes = {
 };
 const themeLabels = { uk:'ТЕМА', en:'THEME', fi:'TEEMA', sv:'TEMA' };
 const typeLabels = {
-  uk:{article:'Стаття', concept:'Концепція', page:'Сторінка'},
-  en:{article:'Article', concept:'Concept', page:'Page'},
-  fi:{article:'Artikkeli', concept:'Käsite', page:'Sivu'},
-  sv:{article:'Artikel', concept:'Begrepp', page:'Sida'}
+  uk:{article:'Стаття', concept:'Концепція', book:'Книга', page:'Сторінка'},
+  en:{article:'Article', concept:'Concept', book:'Book', page:'Page'},
+  fi:{article:'Artikkeli', concept:'Käsite', book:'Kirja', page:'Sivu'},
+  sv:{article:'Artikel', concept:'Begrepp', book:'Bok', page:'Sida'}
 };
 
 fs.rmSync(dist, { recursive:true, force:true });
@@ -94,7 +96,7 @@ function langLinks(routeFn, currentLang) {
 }
 function commonUrls(lang) {
   return {
-    HOME_URL:rootPath(lang), BOOK_URL:routePath(lang,'book'), ARTICLES_URL:routePath(lang,'articles'), CONCEPTS_URL:routePath(lang,'concepts'), AUTHOR_URL:routePath(lang,'author'), SEARCH_URL:routePath(lang,'search'),
+    HOME_URL:rootPath(lang), BOOK_URL:routePath(lang,'books'), ARTICLES_URL:routePath(lang,'articles'), CONCEPTS_URL:routePath(lang,'concepts'), AUTHOR_URL:routePath(lang,'author'), SEARCH_URL:routePath(lang,'search'),
     CONTACT_URL:routePath(lang,'contact'), PRIVACY_URL:routePath(lang,'privacy'), TERMS_URL:routePath(lang,'terms'), FEED_URL:routePath(lang,'feed.xml').replace(/\/$/,'')
   };
 }
@@ -154,11 +156,38 @@ function renderPage(lang, route, title, lead, body, {bodyClass='standard-page', 
   const common=commonTokens(lang), pathname=routePath(lang,route), routeFn=code=>routePath(code,route);
   const schema=basePageSchema(schemaType,lang,pathname,title,lead,schemaExtra);
   const html=replaceTokens(pageTemplate,{
-    ...common, TITLE:esc(title), DESCRIPTION:esc(strip(lead).slice(0,260)), URL_META:urlMeta(pathname), HREFLANG:hreflang(routeFn,lang), STRUCTURED_DATA:JSON.stringify(schema).replaceAll('<','\\u003c'), LANG_LINKS:langLinks(routeFn,lang), PAGE_TITLE:esc(title), PAGE_LEAD:esc(lead), PAGE_BODY:body, BODY_CLASS:bodyClass
+    ...common, TITLE:esc(title), DESCRIPTION:esc(strip(lead).slice(0,260)), OG_TYPE:'website', URL_META:urlMeta(pathname), HREFLANG:hreflang(routeFn,lang), STRUCTURED_DATA:JSON.stringify(schema).replaceAll('<','\\u003c'), LANG_LINKS:langLinks(routeFn,lang), PAGE_TITLE:esc(title), PAGE_LEAD:esc(lead), PAGE_BODY:body, BODY_CLASS:bodyClass
   });
   writeLocalized(lang,route,html);
 }
 function renderSections(sections) { return sections.map(s=>`<section class="prose-section"><h2>${esc(s.heading)}</h2>${s.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join(''); }
+
+function bookBySlug(slug) {
+  const book=booksData.books.find(item=>item.slug===slug);
+  if(!book) throw new Error(`Missing book data: ${slug}`);
+  return book;
+}
+function bookPath(lang,slug){ return routePath(lang,`books/${slug}`); }
+function bookCoverFor(book,lang){ return book.cover?.[lang] || book.cover?.en || book.cover?.uk || '/assets/book-cover.webp'; }
+function renderBookCard(book,lang,{compact=false}={}){
+  const b=book[lang], ui=booksData.ui[lang], label=book.kind==='primary'?ui.primaryLabel:ui.secondaryLabel;
+  const level=compact?'h3':'h2';
+  return `<a class="book-catalog-card ${book.kind==='primary'?'is-primary':'is-secondary'}${compact?' is-compact':''}" href="${bookPath(lang,book.slug)}"><figure class="book-catalog-cover"><img src="${attr(bookCoverFor(book,lang))}" alt="${attr(b.title)}" loading="lazy" decoding="async"></figure><div class="book-catalog-copy"><p class="kicker">${esc(label)}</p><${level}>${esc(b.title)}</${level}><p class="book-catalog-subtitle">${esc(b.subtitle)}</p><p class="book-catalog-description">${esc(b.description)}</p><div class="book-language-line"><span>${esc(ui.ukEdition)}</span><span>${esc(ui.enEdition)}</span></div><b class="book-catalog-action">${esc(ui.explore)} →</b></div></a>`;
+}
+function renderBookPage(lang,book,body){
+  const t=content[lang], ui=booksData.ui[lang], common=commonTokens(lang), b=book[lang], pathname=bookPath(lang,book.slug), routeFn=code=>bookPath(code,book.slug);
+  const cover=bookCoverFor(book,lang);
+  const bookSchema={'@context':'https://schema.org','@type':'Book','@id':`${absolute(pathname)}#book`,name:b.title,alternateName:book.slug==='the-tenth-kilometer'?['Десятий кілометр','The Tenth Kilometer']:['Філософія Кєріка','The Philosophy of Kerik','Philosophy of Kerik'],description:b.description,inLanguage:book.availableLanguages,url:absolute(pathname),image:absolute(cover),copyrightYear:2026,author:{'@type':'Person','@id':`${siteUrl}/#author`,name:'Kyrylo Kovalchuk',alternateName:'Kerik'}};
+  const editions=`<span>${esc(ui.ukEdition)}</span><span>${esc(ui.enEdition)}</span>`;
+  const heroActions=book.slug==='philosophy-of-kerik'
+    ? `<div class="reader-links"><a class="primary" href="/books/short-uk/">${esc(editionLabels[lang][1])}</a><a class="secondary" href="/books/short-en/">${esc(editionLabels[lang][2])}</a></div>`
+    : `<p class="quiet-note">${esc(ui.purchaseNote)}</p>`;
+  const html=replaceTokens(bookPageTemplate,{
+    ...common,LANG:lang,LOCALE:t.locale,TITLE:esc(`${b.title} — ${b.subtitle}`),DESCRIPTION:esc(b.description),URL_META:urlMeta(pathname),HREFLANG:hreflang(routeFn,lang),STRUCTURED_DATA:JSON.stringify(bookSchema).replaceAll('<','\\u003c'),LANG_LINKS:langLinks(routeFn,lang),
+    BOOKS_URL:routePath(lang,'books'),BACK_TO_BOOKS:esc(ui.backToBooks),BOOK_KICKER:esc(book.kind==='primary'?ui.primaryLabel:ui.secondaryLabel),BOOK_TITLE:esc(b.title),BOOK_SUBTITLE:esc(b.subtitle),BOOK_DESCRIPTION:esc(b.description),AUTHOR_LABEL:esc(ui.authorLabel),BOOK_AUTHOR:'Kerik',AVAILABLE_EDITIONS_LABEL:esc(ui.availableEditions),EDITION_BADGES:editions,BOOK_COVER_SRC:attr(cover),BOOK_COVER_ALT:attr(`${b.title} — ${b.subtitle}`),BOOK_HERO_ACTIONS:heroActions,BOOK_BODY:body
+  });
+  writeLocalized(lang,`books/${book.slug}`,html);
+}
 
 for (const lang of langs) {
   const t=content[lang], ui=extended.ui[lang], common=commonTokens(lang), pathname=rootPath(lang), routeFn=code=>rootPath(code);
@@ -166,16 +195,20 @@ for (const lang of langs) {
   const conceptRows=extended.concepts.map((c,i)=>`<a class="concept-row" href="${conceptPath(lang,c.slug)}"><b>${String(i+1).padStart(2,'0')}</b><span>${esc(c[lang].title)}</span><em>→</em></a>`).join('');
   const editions=t.editions.map((item,index)=>{ const href=editionLinks[index]; const label=editionLabels[lang]?.[index]||item; return href?`<li class="edition-link"><a href="${href}"><span>${esc(label)}</span><b>${esc(editionActions[lang])}</b></a></li>`:`<li>${esc(label)}</li>`; }).join('');
   const author=extended.author[lang];
+  const philosophyBook=bookBySlug('philosophy-of-kerik'), tenthBook=bookBySlug('the-tenth-kilometer');
+  const otherBookCard=renderBookCard(tenthBook,lang,{compact:true});
   const structured={'@context':'https://schema.org','@graph':[
     {'@type':'WebSite','@id':`${absolute(pathname)}#website`,name:'Philosophy of Kerik',url:absolute(pathname),inLanguage:lang,potentialAction:{'@type':'SearchAction',target:`${absolute(routePath(lang,'search'))}?q={search_term_string}`,'query-input':'required name=search_term_string'}},
-    {'@type':'Book',name:lang==='uk'?'Філософія Кєріка. Система контролю реальності':'Philosophy of Kerik: The System of Reality Control',author:{'@id':`${siteUrl}/#author`},image:`${siteUrl}/assets/book-cover.webp`,inLanguage:['uk','en'],copyrightYear:2026},
-    {'@type':'Person','@id':`${siteUrl}/#author`,name:'Kyrylo Kovalchuk',url:absolute(routePath(lang,'author')),sameAs:[extended.social.linkedin,extended.social.github]}
+    {'@type':'Book','@id':`${siteUrl}/#philosophy-book`,name:philosophyBook[lang].title,alternateName:['Філософія Кєріка','The Philosophy of Kerik','Philosophy of Kerik'],author:{'@id':`${siteUrl}/#author`},image:absolute(bookCoverFor(philosophyBook,lang)),url:absolute(bookPath(lang,philosophyBook.slug)),inLanguage:['uk','en'],copyrightYear:2026},
+    {'@type':'Book','@id':`${siteUrl}/#tenth-kilometer-book`,name:tenthBook[lang].title,alternateName:['Десятий кілометр','The Tenth Kilometer'],author:{'@id':`${siteUrl}/#author`},image:absolute(bookCoverFor(tenthBook,lang)),url:absolute(bookPath(lang,tenthBook.slug)),inLanguage:['uk','en'],copyrightYear:2026},
+    {'@type':'Person','@id':`${siteUrl}/#author`,name:'Kyrylo Kovalchuk',alternateName:'Kerik',url:absolute(routePath(lang,'author')),sameAs:[extended.social.linkedin,extended.social.github]}
   ]};
   const homeTokens={
     ...common, TITLE:esc(t.title), DESCRIPTION:esc(t.description), URL_META:urlMeta(pathname), HREFLANG:hreflang(routeFn,lang), ASSET_PREFIX:lang==='uk'?'':'../', LANG_LINKS:langLinks(routeFn,lang), STRUCTURED_DATA:JSON.stringify(structured).replaceAll('<','\\u003c'),
-    BOOK_PAGE_URL:common.BOOK_URL, ARTICLES_PAGE_URL:common.ARTICLES_URL, CONCEPTS_PAGE_URL:common.CONCEPTS_URL, AUTHOR_PAGE_URL:common.AUTHOR_URL,
+    BOOKS_PAGE_URL:common.BOOK_URL, BOOK_PAGE_URL:bookPath(lang,'philosophy-of-kerik'), ARTICLES_PAGE_URL:common.ARTICLES_URL, CONCEPTS_PAGE_URL:common.CONCEPTS_URL, AUTHOR_PAGE_URL:common.AUTHOR_URL,
     HERO_TITLE:esc(t.heroTitle), HERO_LEAD:esc(t.heroLead), HERO_BOOK:esc(t.heroBook), PRINCIPLES_URL:routePath(lang,'principles'), PRINCIPLES_LABEL:esc(ui.principles),
     BOOK_HEADING:esc(t.bookHeading), BOOK_KICKER:esc(t.bookKicker), BOOK_TITLE:esc(t.bookTitle), BOOK_TEXT:esc(t.bookText), BOOK_COVER_ALT:esc(`${t.bookHeading}: ${t.bookTitle}`), EDITION_ITEMS:editions, BOOK_NOTE:esc(bookNotes[lang]), BOOK_STRUCTURE_LABEL:esc(ui.bookStructure), REFERENCES_URL:routePath(lang,'references'), REFERENCES_LABEL:esc(ui.references),
+    OTHER_BOOKS_HEADING:esc(booksData.ui[lang].otherBooks), OTHER_BOOKS_CARD:otherBookCard, ALL_BOOKS_LABEL:esc(booksData.ui[lang].allBooks),
     ARTICLES_HEADING:esc(t.articlesHeading), ARTICLES_INTRO:esc(articlesData.ui[lang].intro), ARTICLE_CARDS:homeArticleCards, ALL_ARTICLES_LABEL:esc(ui.allArticles),
     CONCEPTS_HEADING:esc(t.conceptsHeading), CONCEPTS_INTRO:esc(t.conceptsIntro), CONCEPT_ROWS:conceptRows, ALL_CONCEPTS_LABEL:esc(ui.allConcepts),
     EXPLORE_LABEL:esc(ui.navMore), PRINCIPLES_TEASER:esc(extended.principles[lang].lead), BOOK_STRUCTURE_TEASER:esc(extended.bookPage[lang].lead), REFERENCES_TEASER:esc(extended.references[lang].lead),
@@ -194,20 +227,32 @@ for (const lang of langs) {
   renderPage(lang,'concepts',t.conceptsHeading,t.conceptsIntro,conceptIndex,{bodyClass:'concept-index',schemaType:'CollectionPage'});
 
   const p=extended.principles[lang];
-  const principlesBody=`<ol class="principles-list">${p.items.map((item,i)=>`<li><span>${String(i+1).padStart(2,'0')}</span><p>${esc(item)}</p></li>`).join('')}</ol><div class="page-callout"><a class="secondary" href="${routePath(lang,'book')}">${esc(ui.bookStructure)} →</a></div>`;
+  const principlesBody=`<ol class="principles-list">${p.items.map((item,i)=>`<li><span>${String(i+1).padStart(2,'0')}</span><p>${esc(item)}</p></li>`).join('')}</ol><div class="page-callout"><a class="secondary" href="${bookPath(lang,'philosophy-of-kerik')}">${esc(ui.bookStructure)} →</a></div>`;
   renderPage(lang,'principles',p.title,p.lead,principlesBody,{bodyClass:'principles-page'});
 
+  const booksUi=booksData.ui[lang];
+  const philosophyBook=bookBySlug('philosophy-of-kerik');
+  const tenthBook=bookBySlug('the-tenth-kilometer'), tenth=tenthBook[lang];
+  const booksIndexBody=`<div class="book-catalog">${booksData.books.map(book=>renderBookCard(book,lang)).join('')}</div>`;
+  const itemList={'@type':'ItemList',itemListElement:booksData.books.map((book,index)=>({'@type':'ListItem',position:index+1,url:absolute(bookPath(lang,book.slug)),name:book[lang].title}))};
+  renderPage(lang,'books',booksUi.indexTitle,booksUi.indexLead,booksIndexBody,{bodyClass:'books-index-page',schemaType:'CollectionPage',schemaExtra:{mainEntity:itemList}});
+
   const bp=extended.bookPage[lang];
-  const chapters=`<ol class="chapter-list">${extended.chapters.map(ch=>`<li><span>${String(ch.n).padStart(2,'0')}</span><div><h2>${esc(ch[lang].title)}</h2><p>${esc(ch[lang].summary)}</p></div></li>`).join('')}</ol><p class="book-note standalone-note">${esc(bp.note)}</p><div class="reader-links"><a class="primary" href="/books/short-uk/">${esc(editionLabels[lang][1])}</a><a class="secondary" href="/books/short-en/">${esc(editionLabels[lang][2])}</a></div>`;
-  const bookSchema={'@type':'Book',name:lang==='uk'?'Філософія Кєріка. Система контролю реальності':'Philosophy of Kerik: The System of Reality Control',author:{'@type':'Person',name:'Kyrylo Kovalchuk'},inLanguage:['uk','en'],hasPart:extended.chapters.map(ch=>({'@type':'CreativeWork',position:ch.n,name:ch[lang].title,description:ch[lang].summary}))};
-  renderPage(lang,'book',bp.title,bp.lead,chapters,{bodyClass:'book-structure-page',schemaType:'WebPage',schemaExtra:{mainEntity:bookSchema}});
+  const philosophyBody=`<section class="book-detail-section"><h2>${esc(booksUi.structureHeading)}</h2><ol class="chapter-list">${extended.chapters.map(ch=>`<li><span>${String(ch.n).padStart(2,'0')}</span><div><h2>${esc(ch[lang].title)}</h2><p>${esc(ch[lang].summary)}</p></div></li>`).join('')}</ol><p class="book-note standalone-note">${esc(bp.note)}</p></section>`;
+  renderBookPage(lang,philosophyBook,philosophyBody);
+
+  const journeyUnits=lang==='uk'?'метрів':lang==='en'?'metres':lang==='fi'?'metriä':'meter';
+  const journeyKm=lang==='uk'?'кілометрів':lang==='en'?'kilometres':lang==='fi'?'kilometriä':'kilometer';
+  const tenthBody=`<section class="book-journey" aria-label="${attr(booksUi.journeyHeading)}"><div class="book-journey-point"><strong>500</strong><span>${esc(journeyUnits)}</span></div><div class="book-journey-arrow" aria-hidden="true">→</div><div class="book-journey-point"><strong>10</strong><span>${esc(journeyKm)}</span></div><p class="book-journey-text">${esc(tenth.journeyText)}</p></section><section class="book-detail-section"><h2>${esc(booksUi.aboutHeading)}</h2>${tenth.about.map(p=>`<p>${esc(p)}</p>`).join('')}</section><section class="book-detail-section"><h2>${esc(booksUi.contentsHeading)}</h2><ol class="book-toc">${tenth.chapters.map(title=>`<li>${esc(title)}</li>`).join('')}</ol></section><section class="book-detail-section"><h2>${esc(booksUi.medicalHeading)}</h2><p>${esc(tenth.medicalText)}</p><p class="quiet-note">${esc(booksUi.availabilityNote)}</p><aside class="book-disclaimer"><strong>${esc(booksUi.disclaimerHeading)}</strong><p>${esc(tenth.disclaimer)}</p></aside></section>`;
+  renderBookPage(lang,tenthBook,tenthBody);
 
   const ref=extended.references[lang];
   const refsBody=Object.entries(ref.groups).map(([key,label])=>`<section class="reference-group"><h2>${esc(label)}</h2><ol>${extended.references.items.filter(x=>x.group===key).map(x=>`<li><a href="${attr(x.url)}" rel="noopener noreferrer"><strong>${esc(x.title)}</strong><span>${esc(x.source)}${x.year?` · ${esc(x.year)}`:''}</span></a></li>`).join('')}</ol></section>`).join('');
   renderPage(lang,'references',ref.title,ref.lead,refsBody,{bodyClass:'references-page',schemaType:'CollectionPage'});
 
   const a=extended.author[lang];
-  const authorBody=`<div class="author-page-grid"><img src="/assets/1.jpeg" width="300" height="375" alt="Kyrylo Kovalchuk"><div>${a.paragraphs.map(x=>`<p>${esc(x)}</p>`).join('')}<h2>${esc(a.links)}</h2><div class="profile-links"><a class="secondary" href="${attr(extended.social.linkedin)}" rel="me noopener noreferrer">LinkedIn ↗</a><a class="secondary" href="${attr(extended.social.github)}" rel="me noopener noreferrer">GitHub ↗</a></div></div></div>`;
+  const authorBookCards=booksData.books.map(book=>`<a class="author-book-card" href="${bookPath(lang,book.slug)}"><small>${esc(book.kind==='primary'?booksData.ui[lang].primaryLabel:booksData.ui[lang].secondaryLabel)}</small><h3>${esc(book[lang].title)}</h3><p>${esc(book[lang].description)}</p></a>`).join('');
+  const authorBody=`<div class="author-page-grid"><img src="/assets/1.jpeg" width="300" height="375" alt="Kyrylo Kovalchuk"><div>${a.paragraphs.map(x=>`<p>${esc(x)}</p>`).join('')}<h2>${esc(a.links)}</h2><div class="profile-links"><a class="secondary" href="${attr(extended.social.linkedin)}" rel="me noopener noreferrer">LinkedIn ↗</a><a class="secondary" href="${attr(extended.social.github)}" rel="me noopener noreferrer">GitHub ↗</a></div></div></div><section class="author-books"><h2>${esc(booksData.ui[lang].indexTitle)}</h2><div class="author-books-grid">${authorBookCards}</div></section>`;
   const person={'@type':'Person','@id':`${siteUrl}/#author`,name:'Kyrylo Kovalchuk',description:a.lead,sameAs:[extended.social.linkedin,extended.social.github]};
   renderPage(lang,'author',a.title,a.lead,authorBody,{bodyClass:'author-page-detail',schemaType:'ProfilePage',schemaExtra:{mainEntity:person}});
 
@@ -275,7 +320,7 @@ for(const reader of readerEditions){
   const text=readBookText(reader), rendered=renderReader(text,reader), pathname=reader.path, lang=reader.lang;
   const structured={'@context':'https://schema.org','@type':'Book',name:reader.heading,author:{'@type':'Person',name:'Kyrylo Kovalchuk'},inLanguage:lang,url:absolute(pathname),isAccessibleForFree:true};
   const readerHtml=replaceTokens(readerTemplate,{
-    LANG:lang,TITLE:esc(reader.title),DESCRIPTION:esc(reader.description),URL_META:urlMeta(pathname),HREFLANG:`<link rel="canonical" href="${absolute(pathname)}">`,STRUCTURED_DATA:JSON.stringify(structured).replaceAll('<','\\u003c'),SKIP:esc(reader.skip),HOME_URL:rootPath(lang),BOOK_PAGE_URL:routePath(lang,'book'),BACK_LABEL:esc(reader.back),EDITION_LABEL:esc(reader.edition),TITLE_HEADING:esc(reader.heading),AUTHOR_LABEL:esc(reader.author),READER_NOTE:esc(reader.note),BOOK_PAGES:rendered.html,CONTENTS_LABEL:esc(reader.contents),TOC_ITEMS:rendered.toc.map(ch=>`<li><a href="#${ch.id}"><span>${String(ch.n).padStart(2,'0')}</span>${esc(ch.title)}</a></li>`).join(''),PREVIOUS_LABEL:esc(reader.previous),NEXT_LABEL:esc(reader.next),FOOTER_RIGHTS:esc(reader.footerRights)
+    LANG:lang,TITLE:esc(reader.title),DESCRIPTION:esc(reader.description),URL_META:urlMeta(pathname),HREFLANG:`<link rel="canonical" href="${absolute(pathname)}">`,STRUCTURED_DATA:JSON.stringify(structured).replaceAll('<','\\u003c'),SKIP:esc(reader.skip),HOME_URL:rootPath(lang),BOOK_PAGE_URL:bookPath(lang,'philosophy-of-kerik'),BACK_LABEL:esc(reader.back),EDITION_LABEL:esc(reader.edition),TITLE_HEADING:esc(reader.heading),AUTHOR_LABEL:esc(reader.author),READER_NOTE:esc(reader.note),BOOK_PAGES:rendered.html,CONTENTS_LABEL:esc(reader.contents),TOC_ITEMS:rendered.toc.map(ch=>`<li><a href="#${ch.id}"><span>${String(ch.n).padStart(2,'0')}</span>${esc(ch.title)}</a></li>`).join(''),PREVIOUS_LABEL:esc(reader.previous),NEXT_LABEL:esc(reader.next),FOOTER_RIGHTS:esc(reader.footerRights)
   });
   const out=path.join(dist,...pathname.split('/').filter(Boolean)); fs.mkdirSync(out,{recursive:true}); fs.writeFileSync(path.join(out,'index.html'),readerHtml);
 }
@@ -284,7 +329,8 @@ for(const lang of langs){
   const records=[];
   for(const item of articlesData.items){const a=loadArticle(item.slug,lang);records.push({type:typeLabels[lang].article,title:item.titles[lang],url:articlePath(lang,item.slug),excerpt:a.lead,tags:item.tags[lang]});}
   for(const c of extended.concepts) records.push({type:typeLabels[lang].concept,title:c[lang].title,url:conceptPath(lang,c.slug),excerpt:c[lang].lead,tags:[]});
-  records.push({type:typeLabels[lang].page,title:extended.bookPage[lang].title,url:routePath(lang,'book'),excerpt:extended.bookPage[lang].lead,tags:[]});
+  records.push({type:typeLabels[lang].page,title:booksData.ui[lang].indexTitle,url:routePath(lang,'books'),excerpt:booksData.ui[lang].indexLead,tags:[]});
+  for(const book of booksData.books) records.push({type:typeLabels[lang].book,title:`${book[lang].title} — ${book[lang].subtitle}`,url:bookPath(lang,book.slug),excerpt:book[lang].description,tags:book[lang].tags||[]});
   records.push({type:typeLabels[lang].page,title:extended.principles[lang].title,url:routePath(lang,'principles'),excerpt:extended.principles[lang].lead,tags:[]});
   records.push({type:typeLabels[lang].page,title:extended.references[lang].title,url:routePath(lang,'references'),excerpt:extended.references[lang].lead,tags:[]});
   records.push({type:typeLabels[lang].page,title:extended.author[lang].title,url:routePath(lang,'author'),excerpt:extended.author[lang].lead,tags:[]});
@@ -301,11 +347,12 @@ for(const lang of langs){ const dir=outputDirFor(lang,''); fs.mkdirSync(dir,{rec
 
 fs.writeFileSync(path.join(dist,'404.html'),`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>404 — Philosophy of Kerik</title><link rel="stylesheet" href="/styles.css?v=20260817-complete1"></head><body><main class="error-page"><p class="eyebrow">404</p><h1>Page not found</h1><a class="primary" href="/en/">Back to Philosophy of Kerik</a></main></body></html>`);
 fs.writeFileSync(path.join(dist,'_headers'),`/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: SAMEORIGIN\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'\n`);
-fs.writeFileSync(path.join(dist,'_redirects'),`/ua/* /:splat 301\n/uk/* /:splat 301\n`);
+fs.writeFileSync(path.join(dist,'_redirects'),`/ua/* /:splat 301\n/uk/* /:splat 301\n/book /books/philosophy-of-kerik/ 301\n/book/ /books/philosophy-of-kerik/ 301\n/en/book /en/books/philosophy-of-kerik/ 301\n/en/book/ /en/books/philosophy-of-kerik/ 301\n/fi/book /fi/books/philosophy-of-kerik/ 301\n/fi/book/ /fi/books/philosophy-of-kerik/ 301\n/sv/book /sv/books/philosophy-of-kerik/ 301\n/sv/book/ /sv/books/philosophy-of-kerik/ 301\n`);
 const sitemapPaths=[];
 for(const lang of langs){
   sitemapPaths.push(rootPath(lang));
-  for(const route of ['articles','concepts','principles','book','references','author','contact','privacy','terms','search']) sitemapPaths.push(routePath(lang,route));
+  for(const route of ['articles','concepts','principles','books','references','author','contact','privacy','terms','search']) sitemapPaths.push(routePath(lang,route));
+  for(const book of booksData.books) sitemapPaths.push(bookPath(lang,book.slug));
   for(const c of extended.concepts) sitemapPaths.push(conceptPath(lang,c.slug));
   for(const item of articlesData.items) sitemapPaths.push(articlePath(lang,item.slug));
 }
@@ -314,4 +361,4 @@ const sitemap=`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.s
 fs.writeFileSync(path.join(dist,'sitemap.xml'),sitemap);
 fs.writeFileSync(path.join(dist,'robots.txt'),`User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
 
-console.log(`Built Philosophy of Kerik: ${articlesData.items.length} articles × ${langs.length} languages, ${extended.concepts.length} concept pages × ${langs.length}, core pages, search, feeds, readers and SEO files.`);
+console.log(`Built Philosophy of Kerik: ${articlesData.items.length} articles × ${langs.length} languages, ${extended.concepts.length} concept pages × ${langs.length}, ${booksData.books.length} books × ${langs.length}, core pages, search, feeds, readers and SEO files.`);
