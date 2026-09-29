@@ -127,6 +127,9 @@ if(!read('_headers').includes('Content-Security-Policy'))fail('_headers missing 
 if(!read('_redirects').includes('/book/ /books/philosophy-of-kerik/ 301'))fail('_redirects missing legacy /book/ redirect');
 for(const lang of langs){if(!read('sitemap.xml').includes(`${lang==='uk'?'':`/${lang}`}/books/the-tenth-kilometer/`))fail(`sitemap.xml missing ${lang} Tenth Kilometer`)}
 if(exists('assets/the-tenth-kilometer.pdf')||exists('books/the-tenth-kilometer.pdf'))fail('Private Tenth Kilometer PDF must not be published');
+const forbiddenBookLabels=['ІНША КНИГА','OTHER BOOK','MUU KIRJA','ANNAN BOK'];
+for(const lang of langs){const tenth=read(htmlPath(lang,'books/the-tenth-kilometer'));const booksPage=read(htmlPath(lang,'books'));const home=read(htmlPath(lang,''));for(const label of forbiddenBookLabels){if(tenth.includes(label)||booksPage.includes(label)||home.includes(label))fail(`${lang}: forbidden secondary-book label remains: ${label}`)}}
+if(!exists('assets/the-tenth-kilometer-cover.png'))fail('Lossless Tenth Kilometer PNG cover missing');
 
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
 console.log('All complete-site checks passed: 4 languages, 2 books, 10 articles, 4 concepts, 13 Philosophy chapters, 23 Tenth Kilometer chapters, readers, search, feeds, legal pages and SEO.');
