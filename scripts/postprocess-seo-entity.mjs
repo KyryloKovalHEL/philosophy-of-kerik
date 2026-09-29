@@ -80,6 +80,7 @@ for (const page of pages) {
   person['@type'] = 'Person';
   person['@id'] = authorId;
   person.name = 'Kyrylo Kovalchuk';
+  person.alternateName = 'Kerik';
   person.url = page.authorUrl;
   person.sameAs = profileUrls;
   person.knowsAbout = topics;
