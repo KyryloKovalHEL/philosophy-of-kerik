@@ -101,7 +101,7 @@ function langLinks(currentLang) {
 function commonUrls(lang) {
   return {
     HOME_URL: rootPath(lang),
-    BOOK_URL: routePath(lang, 'book'),
+    BOOK_URL: routePath(lang, 'books'),
     ARTICLES_URL: routePath(lang, 'articles'),
     CONCEPTS_URL: routePath(lang, 'concepts'),
     AUTHOR_URL: routePath(lang, 'author'),
@@ -148,6 +148,7 @@ for (const lang of langs) {
     LOCALE: t.locale,
     TITLE: esc(p.title),
     DESCRIPTION: esc(description),
+    OG_TYPE: 'website',
     URL_META: urlMeta,
     HREFLANG: hreflang(lang),
     FEED_LINK: `<link rel="alternate" type="application/atom+xml" title="Philosophy of Kerik" href="${urls.FEED_URL}">`,
