@@ -11,6 +11,7 @@ const content=JSON.parse(fs.readFileSync(path.join(src,'content.json'),'utf8'));
 const articles=JSON.parse(fs.readFileSync(path.join(src,'articles','index.json'),'utf8'));
 const extended=JSON.parse(fs.readFileSync(path.join(src,'extended-content.json'),'utf8'));
 const newArticles=JSON.parse(fs.readFileSync(path.join(src,'new-articles.json'),'utf8'));
+const booksData=JSON.parse(fs.readFileSync(path.join(src,'books','index.json'),'utf8'));
 const exists=f=>fs.existsSync(path.join(dist,f));
 const read=f=>fs.readFileSync(path.join(dist,f),'utf8');
 const count=(s,n)=>s.split(n).length-1;
@@ -21,20 +22,23 @@ const htmlPath=(lang,route='')=>`${prefix(lang)}${route?`${route.replace(/^\/+|\
 
 [
   'index.html','en/index.html','fi/index.html','sv/index.html','styles.css','script.js','favicon.svg','site.webmanifest',
-  'assets/book-cover.webp','assets/social-card.webp','assets/books.css','assets/1.jpeg','books/short-uk/index.html','books/short-en/index.html',
+  'assets/book-cover.webp','assets/the-tenth-kilometer-cover-uk.svg','assets/the-tenth-kilometer-cover-en.svg','assets/social-card.webp','assets/books.css','assets/1.jpeg','books/short-uk/index.html','books/short-en/index.html',
   'robots.txt','sitemap.xml','_headers','_redirects','404.html'
 ].forEach(f=>{if(!exists(f))fail(`Missing ${f}`)});
 
 if(articles.items.length!==10)fail(`Expected 10 articles, found ${articles.items.length}`);
 if(extended.concepts.length!==4)fail(`Expected 4 concepts, found ${extended.concepts.length}`);
 if(extended.chapters.length!==13)fail(`Expected 13 chapters, found ${extended.chapters.length}`);
+if(booksData.books.length!==2)fail(`Expected 2 books, found ${booksData.books.length}`);
+const tenthSource=booksData.books.find(book=>book.slug==='the-tenth-kilometer');
+if(!tenthSource||tenthSource.uk.chapters.length!==23||tenthSource.en.chapters.length!==23)fail('The Tenth Kilometer source data is incomplete');
 for(const lang of langs){
   if(!content[lang])fail(`Missing translation: ${lang}`);
   if(!extended.ui[lang])fail(`Missing extended UI: ${lang}`);
   if(extended.principles[lang]?.items?.length!==7)fail(`${lang}: expected 7 principles`);
 }
 
-const routes=['articles','concepts','principles','book','references','author','contact','privacy','terms','search'];
+const routes=['articles','concepts','principles','books','references','author','contact','privacy','terms','search'];
 for(const lang of langs){
   const homeFile=htmlPath(lang), home=read(homeFile), p=prefix(lang);
   if(!home.includes(`<html lang="${lang}">`))fail(`${homeFile}: wrong html lang`);
@@ -63,12 +67,16 @@ for(const lang of langs){
   if(count(concepts,'class="concept-card"')!==4)fail(`${lang}: incomplete concept index`);
   const principles=read(htmlPath(lang,'principles'));
   if(count(principles,'<li><span>')!==7)fail(`${lang}: principles count mismatch`);
-  const book=read(htmlPath(lang,'book'));
-  if(count(book,'<li><span>')<13||!book.includes('/books/short-uk/')||!book.includes('/books/short-en/'))fail(`${lang}: book structure/readers incomplete`);
+  const philosophy=read(htmlPath(lang,'books/philosophy-of-kerik'));
+  if(count(philosophy,'<li><span>')<13||!philosophy.includes('/books/short-uk/')||!philosophy.includes('/books/short-en/'))fail(`${lang}: Philosophy of Kerik page incomplete`);
+  const tenth=read(htmlPath(lang,'books/the-tenth-kilometer'));
+  if(!tenth.includes('class="book-toc"')||count(tenth,'<li>')<23||!tenth.includes('500')||!tenth.includes('10')||!tenth.includes('book-disclaimer')||!tenth.includes('"@type":"Book"'))fail(`${lang}: The Tenth Kilometer page incomplete`);
+  const booksIndex=read(htmlPath(lang,'books'));
+  if(count(booksIndex,'class="book-catalog-card')<2)fail(`${lang}: books index incomplete`);
   const refs=read(htmlPath(lang,'references'));
   if(count(refs,'class="reference-group"')<5||!refs.includes('NASA')||!refs.includes('World Health Organization'))fail(`${lang}: references incomplete`);
   const author=read(htmlPath(lang,'author'));
-  if(!author.includes('Kyrylo Kovalchuk')||!author.includes('linkedin.com/in/kyrylo-kovalchuk-7276461bb'))fail(`${lang}: author profile incomplete`);
+  if(!author.includes('Kyrylo Kovalchuk')||!author.includes('linkedin.com/in/kyrylo-kovalchuk-7276461bb')||!author.includes('author-books'))fail(`${lang}: author profile incomplete`);
   const contact=read(htmlPath(lang,'contact'));
   if(!contact.includes('LinkedIn')||!contact.includes('GitHub'))fail(`${lang}: contact links incomplete`);
   if(/@gmail\.com|@outlook\.com|@hotmail\.com/i.test(contact))fail(`${lang}: private email exposed`);
@@ -79,7 +87,7 @@ for(const lang of langs){
   const searchFile=`${p}search-index.json`;
   if(!exists(searchFile))fail(`Missing ${searchFile}`);else{
     const records=JSON.parse(read(searchFile));
-    if(records.length<19||!records.some(r=>r.url.includes('/concepts/'))||!records.some(r=>r.url.includes('/articles/')))fail(`${searchFile}: incomplete search data`);
+    if(records.length<22||!records.some(r=>r.url.includes('/concepts/'))||!records.some(r=>r.url.includes('/articles/'))||!records.some(r=>r.url.includes('/books/the-tenth-kilometer/')))fail(`${searchFile}: incomplete search data`);
   }
   const feedFile=`${p}feed.xml`;
   if(!exists(feedFile))fail(`Missing ${feedFile}`);else{
@@ -113,9 +121,11 @@ if(!enReader.includes('I wrote this book based on my own experience'))fail('Engl
 if(enReader.includes('I wrote this book based on his own experience'))fail('English Short Edition: original typo remains');
 
 const sitemap=read('sitemap.xml');
-for(const required of ['/en/references/','/fi/concepts/control-of-reality/','/sv/articles/reality-as-a-model/','/books/short-en/'])if(!sitemap.includes(required))fail(`sitemap.xml missing ${required}`);
+for(const required of ['/en/references/','/fi/concepts/control-of-reality/','/sv/articles/reality-as-a-model/','/books/short-en/','/books/the-tenth-kilometer/','/en/books/philosophy-of-kerik/'])if(!sitemap.includes(required))fail(`sitemap.xml missing ${required}`);
+if(!read('_redirects').includes('/book/ /books/philosophy-of-kerik/ 301'))fail('_redirects missing legacy /book/ redirect');
+const pdfs=[]; const scanForPdfs=dir=>fs.readdirSync(dir,{withFileTypes:true}).forEach(entry=>{const full=path.join(dir,entry.name);if(entry.isDirectory())scanForPdfs(full);else if(entry.name.toLowerCase().endsWith('.pdf'))pdfs.push(full)}); scanForPdfs(src); scanForPdfs(dist); if(pdfs.length)fail(`PDF files must not be public: ${pdfs.join(', ')}`);
 if(!read('robots.txt').includes('https://philosophyofkerik.com/sitemap.xml'))fail('robots.txt missing canonical sitemap URL');
 if(!read('_headers').includes('Content-Security-Policy'))fail('_headers missing CSP');
 
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-console.log('All complete-site checks passed: 4 languages, 10 articles, 4 concepts, 13 chapters, 7 principles, readers, search, feeds, legal pages and SEO.');
+console.log('All complete-site checks passed: 4 languages, 2 books, The Tenth Kilometer, 10 articles, 4 concepts, readers, search, feeds, legal pages and SEO.');
