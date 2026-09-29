@@ -1,0 +1,277 @@
+{
+  "ui": {
+    "uk": {
+      "title": "Книги",
+      "lead": "Книги Кєріка: філософська система та документальна особиста історія.",
+      "primary": "ГОЛОВНА ПРАЦЯ",
+      "other": "ІНША КНИГА",
+      "explore": "Про книгу",
+      "otherBooks": "Інші книги Кєріка",
+      "available": "Доступні видання",
+      "about": "Про книгу",
+      "contents": "Зміст",
+      "medical": "Медична основа",
+      "disclaimer": "Книга не є медичним підручником і не замінює консультацію лікаря.",
+      "distanceLabel": "Шлях повернення рухливості",
+      "authorBooks": "Книги"
+    },
+    "en": {
+      "title": "Books",
+      "lead": "Books by Kerik: a philosophical system and a documentary personal story.",
+      "primary": "CENTRAL WORK",
+      "other": "OTHER BOOK",
+      "explore": "Explore book",
+      "otherBooks": "Other books by Kerik",
+      "available": "Available editions",
+      "about": "About the book",
+      "contents": "Contents",
+      "medical": "Medical basis",
+      "disclaimer": "This book is not a medical textbook and is not a substitute for professional medical advice.",
+      "distanceLabel": "The return to mobility",
+      "authorBooks": "Books"
+    },
+    "fi": {
+      "title": "Kirjat",
+      "lead": "Kerikin kirjat: filosofinen järjestelmä ja dokumentaarinen henkilökohtainen tarina.",
+      "primary": "PÄÄTEOS",
+      "other": "MUU KIRJA",
+      "explore": "Tietoa kirjasta",
+      "otherBooks": "Muita Kerikin kirjoja",
+      "available": "Saatavilla olevat painokset",
+      "about": "Tietoa kirjasta",
+      "contents": "Sisällys",
+      "medical": "Lääketieteellinen perusta",
+      "disclaimer": "Kirja ei ole lääketieteen oppikirja eikä korvaa lääkärin tai muun terveydenhuollon ammattilaisen arviota.",
+      "distanceLabel": "Paluu liikkuvuuteen",
+      "authorBooks": "Kirjat"
+    },
+    "sv": {
+      "title": "Böcker",
+      "lead": "Keriks böcker: ett filosofiskt system och en dokumentär personlig berättelse.",
+      "primary": "HUVUDVERK",
+      "other": "ANNAN BOK",
+      "explore": "Om boken",
+      "otherBooks": "Andra böcker av Kerik",
+      "available": "Tillgängliga utgåvor",
+      "about": "Om boken",
+      "contents": "Innehåll",
+      "medical": "Medicinsk grund",
+      "disclaimer": "Boken är inte en medicinsk lärobok och ersätter inte medicinsk rådgivning från vårdpersonal.",
+      "distanceLabel": "Vägen tillbaka till rörlighet",
+      "authorBooks": "Böcker"
+    }
+  },
+  "items": [
+    {
+      "slug": "philosophy-of-kerik",
+      "authorDisplay": {
+        "uk": "Кєрік",
+        "en": "Kerik",
+        "fi": "Kerik",
+        "sv": "Kerik"
+      },
+      "image": "/assets/book-cover.webp",
+      "languages": [
+        "uk",
+        "en"
+      ],
+      "uk": {
+        "title": "Філософія Кєріка. Система контролю реальності",
+        "subtitle": "Філософська система про індивідуальність, вибір, свободу, технології, багатство та контроль власної реальності.",
+        "description": "Центральна праця Philosophy of Kerik: послідовний рух від Всесвіту й еволюції до грошей, технологій, колективних систем, особистості та індивідуального вибору."
+      },
+      "en": {
+        "title": "Philosophy of Kerik: The System of Reality Control",
+        "subtitle": "A philosophical system about individuality, choice, freedom, technology, wealth and control of one’s own reality.",
+        "description": "The central work of Philosophy of Kerik, moving from the Universe and evolution through money, technology, collective systems and the self to individual choice."
+      },
+      "fi": {
+        "title": "Kerikin filosofia: Todellisuuden hallinnan järjestelmä",
+        "subtitle": "Filosofinen järjestelmä yksilöllisyydestä, valinnoista, vapaudesta, teknologiasta, vauraudesta ja oman todellisuuden hallinnasta.",
+        "description": "Philosophy of Kerik -kokonaisuuden pääteos, joka etenee maailmankaikkeudesta ja evoluutiosta rahan, teknologian, kollektiivisten järjestelmien ja yksilön kautta henkilökohtaiseen valintaan."
+      },
+      "sv": {
+        "title": "Keriks filosofi: Systemet för kontroll över verkligheten",
+        "subtitle": "Ett filosofiskt system om individualitet, val, frihet, teknik, välstånd och kontroll över den egna verkligheten.",
+        "description": "Huvudverket i Philosophy of Kerik, från universum och evolutionen via pengar, teknik, kollektiva system och jaget till individuella val."
+      }
+    },
+    {
+      "slug": "the-tenth-kilometer",
+      "authorDisplay": {
+        "uk": "Кєрік",
+        "en": "Kerik",
+        "fi": "Kerik",
+        "sv": "Kerik"
+      },
+      "languages": [
+        "uk",
+        "en"
+      ],
+      "uk": {
+        "title": "Десятий кілометр",
+        "subtitle": "Подагра, інвалідність і повернення до життя",
+        "description": "«Десятий кілометр» — документальна історія дев’яти років життя з подагрою: від перших нападів, втрати рухливості, інвалідності й палиці до повернення здатності пройти десять кілометрів. Особиста історія поєднується із сучасними медичними знаннями про подагру. Це книга про помилки, лікування, відповідальність і системну перебудову способу життя.",
+        "metaTitle": "Десятий кілометр — книга Кєріка про життя з подагрою",
+        "metaDescription": "«Десятий кілометр» — документальна історія Кєріка про дев’ять років життя з подагрою, інвалідність, системне лікування і повернення рухливості.",
+        "editions": [
+          "Українське видання",
+          "English edition"
+        ],
+        "about": [
+          "Книга поєднує три рівні: особисту документальну історію, сучасні знання про подагру та практичний досвід системної зміни способу життя.",
+          "Медичні пояснення відокремлені від особистого досвіду: автор не заявляє про «чудесне вилікування», а описує шлях від неконтрольованої хвороби до системного контролю, лікування і відновлення функції."
+        ],
+        "medical": "Там, де йдеться про причини, механізми, діагностику або лікування подагри, книга спирається на клінічні рекомендації NICE, American College of Rheumatology та EULAR, а також на наукові огляди й дослідження, наведені у джерелах. Це не означає, що ці організації схвалювали книгу.",
+        "chapters": [
+          "Крайня хата на горі",
+          "Дві гімназії і два способи мислення",
+          "Київ: виживати, вчитися, заробляти",
+          "Бізнес за столом із чаркою",
+          "Дубай, Африка і відчуття невразливості",
+          "Комарі, малярія і chikungunya",
+          "Перший великий палець",
+          "Що насправді таке подагра",
+          "Чому напад болить так, ніби суглоб горить",
+          "Роки заперечення",
+          "Служба, стрес і фраза «бажаю здоров’я»",
+          "День, коли я не зміг взутися",
+          "Від «обмежено придатного» до інвалідності",
+          "Чому подагра виникає: генетика, нирки, алкоголь, їжа і метаболізм",
+          "Що могла і чого не могла зробити Африка",
+          "Лікувати напад — не означає лікувати хворобу",
+          "Системний підхід",
+          "Від палиці й 500 метрів до десяти кілометрів",
+          "Що я побачив у досвіді інших людей із подагрою",
+          "Невиліковна — не означає непереможна",
+          "Десятий кілометр",
+          "Практичний додаток: що варто знати людині після діагнозу",
+          "Джерела і примітки"
+        ]
+      },
+      "en": {
+        "title": "The Tenth Kilometer",
+        "subtitle": "Gout, Disability, and Returning to Life",
+        "description": "The Tenth Kilometer is a documentary account of nine years of life with gout: from the first attacks, loss of mobility, disability and a cane to regaining the ability to walk ten kilometers. Personal experience is combined with current medical knowledge about gout. It is a book about mistakes, treatment, responsibility and systematically rebuilding a way of life.",
+        "metaTitle": "The Tenth Kilometer — A Gout Memoir by Kerik",
+        "metaDescription": "The Tenth Kilometer is Kerik’s documentary account of nine years with gout, disability, systematic treatment and the return to mobility.",
+        "editions": [
+          "Ukrainian edition",
+          "English edition"
+        ],
+        "about": [
+          "The book works on three levels: a documentary personal story, current medical knowledge about gout, and practical experience of systematically rebuilding a way of life.",
+          "Medical explanations are kept distinct from personal experience. The author does not claim a miraculous cure; the story is about moving from uncontrolled disease to systematic management, treatment and restored function."
+        ],
+        "medical": "Where the book discusses the causes, mechanisms, diagnosis or treatment of gout, it draws on clinical guidance from NICE, the American College of Rheumatology and EULAR, together with scientific reviews and studies listed in the sources. This does not imply endorsement of the book by those organizations.",
+        "chapters": [
+          "The Last House on the Mountain",
+          "Two Schools and Two Ways of Thinking",
+          "Kyiv: Survive, Study, Earn",
+          "Business at the Table with a Drink",
+          "Dubai, Africa, and the Feeling of Invulnerability",
+          "Mosquitoes, Malaria, and Chikungunya",
+          "The First Big Toe",
+          "What Gout Really Is",
+          "Why an Attack Hurts as if the Joint Is Burning",
+          "Years of Denial",
+          "Service, Stress, and the Phrase “I Wish You Good Health”",
+          "The Day I Could Not Put on My Shoes",
+          "From “Fit with Limitations” to Disability",
+          "Why Gout Develops: Genetics, Kidneys, Alcohol, Food, and Metabolism",
+          "What Africa Could and Could Not Have Done",
+          "Treating an Attack Does Not Mean Treating the Disease",
+          "A Systemic Approach",
+          "From a Cane and 500 Meters to Ten Kilometers",
+          "What I Saw in the Experiences of Other People with Gout",
+          "Incurable Does Not Mean Invincible",
+          "The Tenth Kilometer",
+          "Practical Appendix: What a Person Should Know After Diagnosis",
+          "Sources and Notes"
+        ]
+      },
+      "fi": {
+        "title": "The Tenth Kilometer",
+        "subtitle": "Kihti, toimintakyvyn menetys ja paluu elämään",
+        "description": "The Tenth Kilometer on dokumentaarinen kertomus yhdeksästä vuodesta kihdin kanssa: ensimmäisistä kohtauksista, liikuntakyvyn menetyksestä, toimintarajoitteista ja kävelykepistä siihen, että kirjoittaja pystyy jälleen kävelemään kymmenen kilometriä. Henkilökohtainen kokemus yhdistyy ajantasaiseen lääketieteelliseen tietoon kihdistä.",
+        "metaTitle": "The Tenth Kilometer — Kerikin henkilökohtainen kertomus kihdistä",
+        "metaDescription": "Kerikin dokumentaarinen kertomus yhdeksästä vuodesta kihdin kanssa, toimintakyvyn menetyksestä, systemaattisesta hoidosta ja liikkuvuuden palautumisesta.",
+        "editions": [
+          "Ukrainankielinen painos",
+          "Englanninkielinen painos"
+        ],
+        "about": [
+          "Kirja yhdistää dokumentaarisen henkilökohtaisen tarinan, ajantasaisen lääketieteellisen tiedon kihdistä ja käytännön kokemuksen elämäntavan systemaattisesta muuttamisesta.",
+          "Lääketieteelliset selitykset erotetaan henkilökohtaisesta kokemuksesta. Kirja ei väitä ihmeparantumista, vaan kuvaa siirtymää hallitsemattomasta sairaudesta systemaattiseen hoitoon ja toimintakyvyn palautumiseen."
+        ],
+        "medical": "Kihdin syitä, mekanismeja, diagnostiikkaa ja hoitoa käsittelevissä osissa kirja nojaa NICE:n, American College of Rheumatologyn ja EULARin kliinisiin suosituksiin sekä lähdeluettelossa mainittuihin tutkimuksiin. Tämä ei tarkoita, että nämä organisaatiot olisivat hyväksyneet kirjan.",
+        "chapters": [
+          "Viimeinen talo vuorella",
+          "Kaksi koulua ja kaksi tapaa ajatella",
+          "Kiova: selviydy, opiskele, ansaitse",
+          "Liiketoimintaa pöydässä ryypyn äärellä",
+          "Dubai, Afrikka ja haavoittumattomuuden tunne",
+          "Hyttyset, malaria ja chikungunya",
+          "Ensimmäinen isovarvas",
+          "Mitä kihti todella on",
+          "Miksi kohtaus sattuu kuin nivel palaisi",
+          "Kieltämisen vuodet",
+          "Palvelus, stressi ja toivotus ”hyvää terveyttä”",
+          "Päivä, jolloin en saanut kenkiä jalkaan",
+          "Rajoitetusti palveluskelpoisesta työkyvyttömyyteen",
+          "Miksi kihti kehittyy: genetiikka, munuaiset, alkoholi, ruoka ja aineenvaihdunta",
+          "Mitä Afrikka saattoi tehdä ja mitä ei",
+          "Kohtauksen hoitaminen ei tarkoita sairauden hoitamista",
+          "Systemaattinen lähestymistapa",
+          "Kepistä ja 500 metristä kymmeneen kilometriin",
+          "Mitä näin muiden kihtiä sairastavien kokemuksissa",
+          "Parantumaton ei tarkoita voittamatonta",
+          "Kymmenes kilometri",
+          "Käytännön liite: mitä diagnoosin jälkeen kannattaa tietää",
+          "Lähteet ja huomautukset"
+        ]
+      },
+      "sv": {
+        "title": "The Tenth Kilometer",
+        "subtitle": "Gikt, funktionsnedsättning och vägen tillbaka till livet",
+        "description": "The Tenth Kilometer är en dokumentär berättelse om nio år med gikt: från de första anfallen, förlorad rörlighet, funktionsnedsättning och käpp till att åter kunna gå tio kilometer. Den personliga erfarenheten kombineras med aktuell medicinsk kunskap om gikt.",
+        "metaTitle": "The Tenth Kilometer — Keriks personliga berättelse om gikt",
+        "metaDescription": "Keriks dokumentära berättelse om nio år med gikt, funktionsnedsättning, systematisk behandling och återvunnen rörlighet.",
+        "editions": [
+          "Ukrainsk utgåva",
+          "Engelsk utgåva"
+        ],
+        "about": [
+          "Boken förenar en dokumentär personlig berättelse, aktuell medicinsk kunskap om gikt och praktisk erfarenhet av att systematiskt bygga om sin livsstil.",
+          "De medicinska förklaringarna hålls isär från den personliga erfarenheten. Boken gör inget anspråk på någon mirakelkur utan beskriver vägen från okontrollerad sjukdom till systematisk behandling och återvunnen funktion."
+        ],
+        "medical": "När boken behandlar orsaker, mekanismer, diagnostik eller behandling av gikt bygger den på kliniska rekommendationer från NICE, American College of Rheumatology och EULAR samt vetenskapliga översikter och studier som anges i källorna. Det innebär inte att dessa organisationer har godkänt boken.",
+        "chapters": [
+          "Det sista huset på berget",
+          "Två skolor och två sätt att tänka",
+          "Kyiv: överleva, studera, tjäna",
+          "Affärer vid bordet med ett glas",
+          "Dubai, Afrika och känslan av osårbarhet",
+          "Myggor, malaria och chikungunya",
+          "Den första stortån",
+          "Vad gikt egentligen är",
+          "Varför ett anfall gör ont som om leden brinner",
+          "År av förnekelse",
+          "Tjänst, stress och frasen ”jag önskar dig god hälsa”",
+          "Dagen då jag inte kunde ta på mig skorna",
+          "Från begränsat tjänstduglig till funktionsnedsättning",
+          "Varför gikt utvecklas: genetik, njurar, alkohol, mat och metabolism",
+          "Vad Afrika kunde och inte kunde ha gjort",
+          "Att behandla ett anfall är inte samma sak som att behandla sjukdomen",
+          "Ett systematiskt angreppssätt",
+          "Från käpp och 500 meter till tio kilometer",
+          "Vad jag såg i andra människors erfarenheter av gikt",
+          "Obotlig betyder inte oövervinnelig",
+          "Den tionde kilometern",
+          "Praktisk bilaga: vad man bör veta efter diagnosen",
+          "Källor och noter"
+        ]
+      }
+    }
+  ]
+}
