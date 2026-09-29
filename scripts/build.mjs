@@ -81,13 +81,14 @@ function hreflang(routeFn, currentLang) {
     `<link rel="canonical" href="${absolute(routeFn(currentLang))}">`
   ].join('\n  ');
 }
-function urlMeta(pathname, type='website') {
+function urlMeta(pathname, type='website', imagePath='/assets/social-card.webp', imageWidth=1200, imageHeight=630) {
+  const imageUrl=absolute(imagePath);
   return [
     `<meta property="og:url" content="${absolute(pathname)}">`,
-    `<meta property="og:image" content="${siteUrl}/assets/social-card.webp">`,
-    `<meta property="og:image:width" content="1200">`,
-    `<meta property="og:image:height" content="630">`,
-    `<meta name="twitter:image" content="${siteUrl}/assets/social-card.webp">`,
+    `<meta property="og:image" content="${imageUrl}">`,
+    `<meta property="og:image:width" content="${imageWidth}">`,
+    `<meta property="og:image:height" content="${imageHeight}">`,
+    `<meta name="twitter:image" content="${imageUrl}">`,
     type === 'article' ? `<meta property="article:author" content="Kyrylo Kovalchuk">` : ''
   ].filter(Boolean).join('\n  ');
 }
@@ -183,8 +184,8 @@ function renderBookPage(lang,book,body){
     ? `<div class="reader-links"><a class="primary" href="/books/short-uk/">${esc(editionLabels[lang][1])}</a><a class="secondary" href="/books/short-en/">${esc(editionLabels[lang][2])}</a></div>`
     : `<p class="quiet-note">${esc(ui.purchaseNote)}</p>`;
   const html=replaceTokens(bookPageTemplate,{
-    ...common,LANG:lang,LOCALE:t.locale,TITLE:esc(`${b.title} — ${b.subtitle}`),DESCRIPTION:esc(b.description),URL_META:urlMeta(pathname),HREFLANG:hreflang(routeFn,lang),STRUCTURED_DATA:JSON.stringify(bookSchema).replaceAll('<','\\u003c'),LANG_LINKS:langLinks(routeFn,lang),
-    BOOKS_URL:routePath(lang,'books'),BACK_TO_BOOKS:esc(ui.backToBooks),BOOK_KICKER:esc(book.kind==='primary'?ui.primaryLabel:ui.secondaryLabel),BOOK_TITLE:esc(b.title),BOOK_SUBTITLE:esc(b.subtitle),BOOK_DESCRIPTION:esc(b.description),AUTHOR_LABEL:esc(ui.authorLabel),BOOK_AUTHOR:'Kerik',AVAILABLE_EDITIONS_LABEL:esc(ui.availableEditions),EDITION_BADGES:editions,BOOK_COVER_SRC:attr(cover),BOOK_COVER_ALT:attr(`${b.title} — ${b.subtitle}`),BOOK_HERO_ACTIONS:heroActions,BOOK_BODY:body
+    ...common,LANG:lang,LOCALE:t.locale,TITLE:esc(`${b.title} — ${b.subtitle}`),DESCRIPTION:esc(b.description),URL_META:urlMeta(pathname,'website',cover,688,book.slug==='philosophy-of-kerik'?1265:1060),HREFLANG:hreflang(routeFn,lang),STRUCTURED_DATA:JSON.stringify(bookSchema).replaceAll('<','\\u003c'),LANG_LINKS:langLinks(routeFn,lang),
+    BOOKS_URL:routePath(lang,'books'),BACK_TO_BOOKS:esc(ui.backToBooks),BOOK_KICKER:esc(book.kind==='primary'?ui.primaryLabel:ui.secondaryLabel),BOOK_TITLE:esc(b.title),BOOK_SUBTITLE:esc(b.subtitle),BOOK_DESCRIPTION:esc(b.description),AUTHOR_LABEL:esc(ui.authorLabel),BOOK_AUTHOR:lang==='uk'?'Кєрік':'Kerik',AVAILABLE_EDITIONS_LABEL:esc(ui.availableEditions),EDITION_BADGES:editions,BOOK_COVER_SRC:attr(cover),BOOK_COVER_ALT:attr(`${b.title} — ${b.subtitle}`),BOOK_HERO_ACTIONS:heroActions,BOOK_BODY:body
   });
   writeLocalized(lang,`books/${book.slug}`,html);
 }
