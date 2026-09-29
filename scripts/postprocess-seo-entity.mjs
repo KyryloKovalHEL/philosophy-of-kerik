@@ -85,20 +85,17 @@ for (const page of pages) {
   person.sameAs = profileUrls;
   person.knowsAbout = topics;
 
-  const book = graph.find(node => node['@type'] === 'Book');
-  if (book) {
+  const books = graph.filter(node => node['@type'] === 'Book');
+  for (const book of books) {
     book.author = { '@id': authorId };
     book.creator = { '@id': authorId };
-    book.isPartOf = { '@id': philosophyId };
-    if (page.lang === 'uk') {
-      book.name = 'Філософія Кєріка. Система контролю реальності';
-      book.alternateName = ['Філософія Кєріка', 'The Philosophy of Kerik', 'Philosophy of Kerik'];
-      book.url = `${siteUrl}/books/short-uk/`;
-    } else {
-      book.name = 'The Philosophy of Kerik: The System of Reality Control';
-      book.alternateName = ['The Philosophy of Kerik', 'Philosophy of Kerik'];
-      book.url = `${siteUrl}/books/short-en/`;
-    }
+  }
+  const philosophyBook = books.find(node => node['@id'] === siteUrl + '/#philosophy-book') || books[0];
+  if (philosophyBook) {
+    philosophyBook.isPartOf = { '@id': philosophyId };
+    philosophyBook.alternateName = ['Філософія Кєріка', 'The Philosophy of Kerik', 'Philosophy of Kerik'];
+    const localizedPrefix = page.lang === 'uk' ? '' : '/' + page.lang;
+    philosophyBook.url = siteUrl + localizedPrefix + '/books/philosophy-of-kerik/';
   }
 
   const philosophy = {
