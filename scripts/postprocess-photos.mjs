@@ -76,7 +76,7 @@ ${heroInner}
   html = html.replace(bookCoverPattern, '$1 loading="lazy" decoding="async"');
 
   const researchPhoto = `<figure class="research-photo"><img src="/assets/kerik-library.webp" width="720" height="1081" loading="lazy" decoding="async" alt="${localized[lang].library}"></figure>`;
-  const bookEndPattern = /(<section class="section" id="book">[\s\S]*?<div class="book-grid editorial-book-grid">)([\s\S]*?)(<\/div>\s*<\/section>\s*<section class="section" id="articles">)/;
+  const bookEndPattern = /(<section class="section" id="book">[\s\S]*?<div class="book-grid editorial-book-grid">)([\s\S]*?)(<\/div>\s*<\/section>)/;
   if (!bookEndPattern.test(html)) throw new Error(`${relative}: book section end not found`);
   html = html.replace(bookEndPattern, `$1$2${researchPhoto}$3`);
 
