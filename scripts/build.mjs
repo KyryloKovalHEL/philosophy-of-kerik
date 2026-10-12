@@ -336,6 +336,61 @@ for(const lang of langs){
 for(const reader of readerEditions) sitemapPaths.push(reader.path);
 const sitemap=`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...new Set(sitemapPaths)].map(p=>`<url><loc>${absolute(p)}</loc><lastmod>${articlesData.updated || articlesData.published}</lastmod></url>`).join('')}</urlset>`;
 fs.writeFileSync(path.join(dist,'sitemap.xml'),sitemap);
-fs.writeFileSync(path.join(dist,'robots.txt'),`User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
+const robots=`User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: OAI-AdsBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: ${siteUrl}/sitemap.xml
+`;
+fs.writeFileSync(path.join(dist,'robots.txt'),robots);
+
+const llms=[
+  '# Philosophy of Kerik',
+  '',
+  '> Official multilingual website and author platform of Kyrylo Kovalchuk (Kerik), covering the Philosophy of Kerik system, books, articles, concepts, principles and source material.',
+  '',
+  '## Canonical site',
+  `- ${siteUrl}/`,
+  '',
+  '## Author',
+  `- Kyrylo Kovalchuk (Kerik): ${siteUrl}/en/author/`,
+  '',
+  '## Language editions',
+  `- Ukrainian: ${siteUrl}/`,
+  `- English: ${siteUrl}/en/`,
+  `- Finnish: ${siteUrl}/fi/`,
+  `- Swedish: ${siteUrl}/sv/`,
+  '',
+  '## Books',
+  ...booksData.items.map(book=>`- ${book.en.title}: ${absolute(routePath('en',`books/${book.slug}`))}`),
+  '',
+  '## Articles',
+  ...articlesData.items.map(item=>`- ${item.titles.en}: ${absolute(articlePath('en',item.slug))}`),
+  '',
+  '## Core concepts',
+  ...extended.concepts.map(item=>`- ${item.en.title}: ${absolute(conceptPath('en',item.slug))}`),
+  '',
+  '## Further context',
+  `- Principles: ${siteUrl}/en/principles/`,
+  `- References and sources: ${siteUrl}/en/references/`,
+  `- Contact: ${siteUrl}/en/contact/`,
+  `- Sitemap: ${siteUrl}/sitemap.xml`,
+  ''
+].join('\\n');
+fs.writeFileSync(path.join(dist,'llms.txt'),llms);
 
 console.log(`Built Philosophy of Kerik: ${booksData.items.length} books, ${articlesData.items.length} articles × ${langs.length} languages, ${extended.concepts.length} concept pages × ${langs.length}, core pages, search, feeds, readers and SEO files.`);

@@ -23,7 +23,7 @@ const htmlPath=(lang,route='')=>`${prefix(lang)}${route?`${route.replace(/^\/+|\
 [
   'index.html','en/index.html','fi/index.html','sv/index.html','styles.css','script.js','favicon.svg','site.webmanifest',
   'assets/book-cover.webp','assets/social-card.webp','assets/books.css','assets/1.jpeg','books/short-uk/index.html','books/short-en/index.html',
-  'robots.txt','sitemap.xml','_headers','_redirects','404.html'
+  'robots.txt','llms.txt','sitemap.xml','_headers','_redirects','404.html'
 ].forEach(f=>{if(!exists(f))fail(`Missing ${f}`)});
 
 if(articles.items.length!==10)fail(`Expected 10 articles, found ${articles.items.length}`);
@@ -122,7 +122,11 @@ if(enReader.includes('I wrote this book based on his own experience'))fail('Engl
 
 const sitemap=read('sitemap.xml');
 for(const required of ['/en/references/','/fi/concepts/control-of-reality/','/sv/articles/reality-as-a-model/','/books/short-en/'])if(!sitemap.includes(required))fail(`sitemap.xml missing ${required}`);
-if(!read('robots.txt').includes('https://philosophyofkerik.com/sitemap.xml'))fail('robots.txt missing canonical sitemap URL');
+const robots=read('robots.txt');
+if(!robots.includes('https://philosophyofkerik.com/sitemap.xml'))fail('robots.txt missing canonical sitemap URL');
+for(const agent of ['OAI-SearchBot','OAI-AdsBot','GPTBot','ChatGPT-User','Google-Extended'])if(!robots.includes(`User-agent: ${agent}\\nAllow: /`))fail(`robots.txt missing explicit allow for ${agent}`);
+const llms=read('llms.txt');
+if(!llms.includes('# Philosophy of Kerik')||!llms.includes('Kyrylo Kovalchuk')||!llms.includes('/en/books/the-tenth-kilometer/')||!llms.includes('/en/articles/'))fail('llms.txt incomplete');
 if(!read('_headers').includes('Content-Security-Policy'))fail('_headers missing CSP');
 if(!read('_redirects').includes('/book/ /books/philosophy-of-kerik/ 301'))fail('_redirects missing legacy /book/ redirect');
 for(const lang of langs){if(!read('sitemap.xml').includes(`${lang==='uk'?'':`/${lang}`}/books/the-tenth-kilometer/`))fail(`sitemap.xml missing ${lang} Tenth Kilometer`)}
