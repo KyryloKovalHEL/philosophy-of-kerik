@@ -390,7 +390,7 @@ const llms=[
   `- Contact: ${siteUrl}/en/contact/`,
   `- Sitemap: ${siteUrl}/sitemap.xml`,
   ''
-].join('\\n');
+].join('\n');
 fs.writeFileSync(path.join(dist,'llms.txt'),llms);
 
 console.log(`Built Philosophy of Kerik: ${booksData.items.length} books, ${articlesData.items.length} articles × ${langs.length} languages, ${extended.concepts.length} concept pages × ${langs.length}, core pages, search, feeds, readers and SEO files.`);

@@ -124,7 +124,7 @@ const sitemap=read('sitemap.xml');
 for(const required of ['/en/references/','/fi/concepts/control-of-reality/','/sv/articles/reality-as-a-model/','/books/short-en/'])if(!sitemap.includes(required))fail(`sitemap.xml missing ${required}`);
 const robots=read('robots.txt');
 if(!robots.includes('https://philosophyofkerik.com/sitemap.xml'))fail('robots.txt missing canonical sitemap URL');
-for(const agent of ['OAI-SearchBot','OAI-AdsBot','GPTBot','ChatGPT-User','Google-Extended'])if(!robots.includes(`User-agent: ${agent}\\nAllow: /`))fail(`robots.txt missing explicit allow for ${agent}`);
+for(const agent of ['OAI-SearchBot','OAI-AdsBot','GPTBot','ChatGPT-User','Google-Extended'])if(!robots.includes(`User-agent: ${agent}\nAllow: /`))fail(`robots.txt missing explicit allow for ${agent}`);
 const llms=read('llms.txt');
 if(!llms.includes('# Philosophy of Kerik')||!llms.includes('Kyrylo Kovalchuk')||!llms.includes('/en/books/the-tenth-kilometer/')||!llms.includes('/en/articles/'))fail('llms.txt incomplete');
 if(!read('_headers').includes('Content-Security-Policy'))fail('_headers missing CSP');
