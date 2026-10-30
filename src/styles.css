@@ -39,3 +39,32 @@ footer{max-width:var(--max);margin:auto;border-top:1px solid var(--line);padding
 .catalog-tenth-cover-image{width:auto!important;max-width:190px!important;max-height:350px!important;justify-self:center}
 .tenth-cover-large-image{width:100%;max-width:320px}
 @media(max-width:760px){.mini-tenth-cover-image,.catalog-tenth-cover-image,.tenth-cover-large-image{max-width:240px}}
+
+
+/* Accessible, localized analytics consent notice; no tracking before opt-in. */
+.kerik-consent-banner[hidden] { display: none !important; }
+.kerik-consent-banner {
+  position: fixed; z-index: 9999; left: 18px; bottom: 18px;
+  width: min(410px, calc(100vw - 36px));
+  max-height: calc(100dvh - 36px); overflow: auto;
+  box-sizing: border-box; padding: 20px;
+  background: #1a1714; color: #f6efe6; border: 1px solid #75644d;
+  border-radius: 12px; box-shadow: 0 12px 44px #0009;
+  font: 14px/1.5 system-ui, sans-serif; text-align: left;
+}
+.kerik-consent-banner strong { display: block; font-size: 17px; margin: 0 0 7px; }
+.kerik-consent-banner p { margin: 0 0 15px; color: #e6dfd4; }
+.kerik-consent-banner a { color: #eac78c; text-decoration: underline; }
+.kerik-consent-buttons { display: flex; gap: 10px; }
+.kerik-consent-buttons button {
+  flex: 1; min-width: 0; padding: 10px 12px; border-radius: 7px;
+  border: 1px solid #bba987; background: #2f2922; color: #fff;
+  font: 600 14px system-ui, sans-serif; cursor: pointer;
+}
+.kerik-consent-buttons button:hover { background: #453b30; }
+.kerik-consent-buttons button:focus-visible,
+.kerik-cookie-settings:focus-visible { outline: 2px solid #f8c879; outline-offset: 3px; }
+.kerik-cookie-settings {
+  border: 0; padding: 0; background: none; color: inherit;
+  font: inherit; text-decoration: underline; cursor: pointer;
+}
