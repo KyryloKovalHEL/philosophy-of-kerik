@@ -183,3 +183,144 @@ if (progressBar || chapterSections.length) {
   addEventListener('resize', requestUpdate);
   updateReaderState();
 }
+
+
+// Google Analytics 4: load only after the visitor explicitly accepts analytics.
+(() => {
+  'use strict';
+  const measurementId = 'G-ZSN6NWV8KD';
+  const storageKey = 'kerik-analytics-consent-v1';
+  const language = document.documentElement.lang;
+  const copy = {
+    uk: {
+      title: 'Аналітичні cookies',
+      body: 'Ми використовуємо Google Analytics лише за вашої згоди, щоб розуміти відвідуваність та використання сайту. Google може отримувати дані переглядів і встановлювати аналітичні cookies строком до 2 років.',
+      privacy: 'Політика конфіденційності',
+      accept: 'Прийняти',
+      reject: 'Відхилити',
+      settings: 'Налаштування cookies'
+    },
+    en: {
+      title: 'Analytics cookies',
+      body: 'With your permission, we use Google Analytics to understand visits and website usage. Google may receive page-view data and set analytics cookies lasting up to 2 years.',
+      privacy: 'Privacy policy',
+      accept: 'Accept',
+      reject: 'Reject',
+      settings: 'Cookie settings'
+    },
+    fi: {
+      title: 'Analytiikkaevästeet',
+      body: 'Käytämme Google Analyticsia vain suostumuksellasi sivuston kävijämäärien ja käytön mittaamiseen. Google voi vastaanottaa sivukatselutietoja ja asettaa analytiikkaevästeitä, joiden voimassaoloaika on enintään 2 vuotta.',
+      privacy: 'Tietosuojakäytäntö',
+      accept: 'Hyväksy',
+      reject: 'Hylkää',
+      settings: 'Evästeasetukset'
+    },
+    sv: {
+      title: 'Analyskakor',
+      body: 'Med ditt samtycke använder vi Google Analytics för att förstå besök och hur webbplatsen används. Google kan få uppgifter om sidvisningar och lagra analyskakor i upp till 2 år.',
+      privacy: 'Integritetspolicy',
+      accept: 'Godkänn',
+      reject: 'Avvisa',
+      settings: 'Cookieinställningar'
+    }
+  }[language] || {
+    title: 'Analytics cookies',
+    body: 'With your permission, we use Google Analytics to understand visits and website usage. Google may receive page-view data and set analytics cookies lasting up to 2 years.',
+    privacy: 'Privacy policy',
+    accept: 'Accept',
+    reject: 'Reject',
+    settings: 'Cookie settings'
+  };
+
+  let choice = null;
+  try { choice = localStorage.getItem(storageKey); } catch (_) { /* Storage may be unavailable. */ }
+
+  function enableAnalytics() {
+    if (window.__kerikAnalyticsEnabled) return;
+    window.__kerikAnalyticsEnabled = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    // No advertising consent is requested or granted by this website.
+    window.gtag('consent', 'default', {
+      analytics_storage: 'granted',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    window.gtag('js', new Date());
+    window.gtag('config', measurementId);
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+    document.head.appendChild(tag);
+  }
+
+  function eraseAnalyticsCookies() {
+    document.cookie.split(';').forEach(entry => {
+      const name = entry.split('=')[0].trim();
+      if (name !== '_ga' && !name.startsWith('_ga_')) return;
+      for (const domain of ['', '; domain=philosophyofkerik.com', '; domain=.philosophyofkerik.com']) {
+        document.cookie = name + '=; path=/; max-age=0; SameSite=Lax' + domain;
+      }
+    });
+  }
+
+  if (choice === 'accepted') enableAnalytics();
+
+  const panel = document.createElement('section');
+  panel.className = 'kerik-consent-banner';
+  panel.setAttribute('role', 'region');
+  panel.setAttribute('aria-label', copy.title);
+  panel.hidden = true;
+  const heading = document.createElement('strong');
+  heading.textContent = copy.title;
+  const description = document.createElement('p');
+  description.textContent = copy.body + ' ';
+  const privacy = document.createElement('a');
+  privacy.href = (language === 'uk' ? '/' : '/' + (['en', 'fi', 'sv'].includes(language) ? language : 'en') + '/') + 'privacy/';
+  privacy.textContent = copy.privacy;
+  description.appendChild(privacy);
+  const buttons = document.createElement('div');
+  buttons.className = 'kerik-consent-buttons';
+
+  function setChoice(next) {
+    const wasAccepted = choice === 'accepted';
+    choice = next;
+    try { localStorage.setItem(storageKey, next); } catch (_) { /* Treat as session-only. */ }
+    panel.hidden = true;
+    if (next === 'accepted') {
+      enableAnalytics();
+    } else if (wasAccepted) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', { analytics_storage: 'denied' });
+      }
+      eraseAnalyticsCookies();
+      window.location.reload();
+    }
+  }
+
+  const reject = document.createElement('button');
+  reject.type = 'button';
+  reject.textContent = copy.reject;
+  reject.addEventListener('click', () => setChoice('rejected'));
+  const accept = document.createElement('button');
+  accept.type = 'button';
+  accept.textContent = copy.accept;
+  accept.addEventListener('click', () => setChoice('accepted'));
+  buttons.append(reject, accept);
+  panel.append(heading, description, buttons);
+  document.body.appendChild(panel);
+
+  const settings = document.createElement('button');
+  settings.type = 'button';
+  settings.className = 'kerik-cookie-settings';
+  settings.textContent = copy.settings;
+  settings.addEventListener('click', () => {
+    panel.hidden = false;
+    reject.focus();
+  });
+  const footer = document.querySelector('footer .footer-links') || document.querySelector('footer');
+  if (footer) footer.appendChild(settings);
+  if (choice !== 'accepted' && choice !== 'rejected') panel.hidden = false;
+})();
